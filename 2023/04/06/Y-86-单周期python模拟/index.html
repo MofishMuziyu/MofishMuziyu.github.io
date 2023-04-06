@@ -21,28 +21,34 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Muziyu&#39;s Blog">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="闲话小说大二下开的这门课，计算机体系结构与组成原理，我去，两周讲了两大章，还没怎么听，第二节有事还给翘了。布置的作业总算是完成了，虽然没有写流水线，不过在这个基础上再捯拾捯拾应该也就出来了，主要的问题还会多线程怎么在这个软件层次去模拟。  OK，话不多说，直接正文单周期原理指令  首先需要知道Y-86的指令是如何编码的，是一个两位的数字，第一位是操作码，第二位是功能码，三四位时寄存器的号，后面八个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Y-86-单周期python模拟">
+<meta property="og:url" content="http://example.com/2023/04/06/Y-86-%E5%8D%95%E5%91%A8%E6%9C%9Fpython%E6%A8%A1%E6%8B%9F/index.html">
 <meta property="og:site_name" content="Muziyu&#39;s Blog">
+<meta property="og:description" content="闲话小说大二下开的这门课，计算机体系结构与组成原理，我去，两周讲了两大章，还没怎么听，第二节有事还给翘了。布置的作业总算是完成了，虽然没有写流水线，不过在这个基础上再捯拾捯拾应该也就出来了，主要的问题还会多线程怎么在这个软件层次去模拟。  OK，话不多说，直接正文单周期原理指令  首先需要知道Y-86的指令是如何编码的，是一个两位的数字，第一位是操作码，第二位是功能码，三四位时寄存器的号，后面八个">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-06T12:36:52.000Z">
+<meta property="article:modified_time" content="2023-04-06T13:04:35.494Z">
 <meta property="article:author" content="阿良">
+<meta property="article:tag" content="作业">
+<meta property="article:tag" content="指令集">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2023/04/06/Y-86-%E5%8D%95%E5%91%A8%E6%9C%9Fpython%E6%A8%A1%E6%8B%9F/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Muziyu's Blog</title>
+  <title>Y-86-单周期python模拟 | Muziyu's Blog</title>
   
 
 
@@ -181,9 +187,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -199,10 +206,9 @@
       <meta itemprop="name" content="Muziyu's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/04/06/Y-86-%E5%8D%95%E5%91%A8%E6%9C%9Fpython%E6%A8%A1%E6%8B%9F/" class="post-title-link" itemprop="url">Y-86-单周期python模拟</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Y-86-单周期python模拟
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -235,7 +241,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="闲话小说"><a href="#闲话小说" class="headerlink" title="闲话小说"></a>闲话小说</h2><p>大二下开的这门课，计算机体系结构与组成原理，我去，两周讲了两大章，还没怎么听，第二节有事还给翘了。布置的作业总算是完成了，虽然没有写流水线，不过在这个基础上再捯拾捯拾应该也就出来了，主要的问题还会多线程怎么在这个软件层次去模拟。</p>
+        <h2 id="闲话小说"><a href="#闲话小说" class="headerlink" title="闲话小说"></a>闲话小说</h2><p>大二下开的这门课，计算机体系结构与组成原理，我去，两周讲了两大章，还没怎么听，第二节有事还给翘了。布置的作业总算是完成了，虽然没有写流水线，不过在这个基础上再捯拾捯拾应该也就出来了，主要的问题还会多线程怎么在这个软件层次去模拟。</p>
 <hr>
 <h2 id="OK，话不多说，直接正文"><a href="#OK，话不多说，直接正文" class="headerlink" title="OK，话不多说，直接正文"></a>OK，话不多说，直接正文</h2><h3 id="单周期原理"><a href="#单周期原理" class="headerlink" title="单周期原理"></a>单周期原理</h3><p><strong>指令</strong></p>
 <blockquote>
@@ -509,7 +515,6 @@ instruction = &#39;&#39;
 <hr>
 <p><strong>单周期的实现就这么多了，流水线是一个改进的方向，应该还比较好改进吧，不过也不想做了，就这样吧，以后有时间再改进，初步的改进方式，肯定是给全局变量重新在每一个阶段都分配一个值，然后各个阶段之间加入寄存器，控制冲突和数据冲突也可以解决，但是真正的问题是，一个顺序执行的程序 ，你如何保证 成为一个流水线的并行模式呢，毕竟软件不是硬件，硬件空闲了就可以直接用，你的程序执行到哪里就是哪里，不会同时执行好几个函数，所以最终的问题又回到并发上面了，暂时没学，留待后效</strong></p>
 
-      
     </div>
 
     
@@ -517,381 +522,40 @@ instruction = &#39;&#39;
     
 
      
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E4%BD%9C%E4%B8%9A/" rel="tag"><i class="fa fa-tag"></i>
+              <a href="/tags/%E6%8C%87%E4%BB%A4%E9%9B%86/" rel="tag"><i class="fa fa-tag"></i>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/06/Y-86%E6%8C%87%E4%BB%A4%E5%8A%9F%E8%83%BD%E9%80%9F%E6%9F%A5/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/maimai.jpg">
-      <meta itemprop="name" content="阿良">
-      <meta itemprop="description" content="">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Muziyu's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/04/06/Y-86%E6%8C%87%E4%BB%A4%E5%8A%9F%E8%83%BD%E9%80%9F%E6%9F%A5/" class="post-title-link" itemprop="url">Y-86指令功能速查</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-04-06 10:27:55 / 修改时间：21:14:26" itemprop="dateCreated datePublished" datetime="2023-04-06T10:27:55+08:00">2023-04-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/notes/" itemprop="url" rel="index"><span itemprop="name">notes</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="暂时空着，以后写"><a href="#暂时空着，以后写" class="headerlink" title="暂时空着，以后写"></a>暂时空着，以后写</h2><h2 id="halt指令-00"><a href="#halt指令-00" class="headerlink" title="halt指令 00"></a>halt指令 00</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可，取指阶段需要将Stat置为HLT  </li>
-<li>译码：无  </li>
-<li>执行：无</li>
-<li>访存：无  </li>
-<li>写回：无</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-10"><a href="#nop指令-10" class="headerlink" title="nop指令  10"></a>nop指令  10</h2><blockquote>
-<ul>
-<li>取指： </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令"><a href="#nop指令" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-1"><a href="#nop指令-1" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-2"><a href="#nop指令-2" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-3"><a href="#nop指令-3" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-4"><a href="#nop指令-4" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-5"><a href="#nop指令-5" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-6"><a href="#nop指令-6" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/06/Y-86%E6%8C%87%E4%BB%A4%E5%8A%9F%E8%83%BD%E9%80%9F%E6%9F%A5/" rel="prev" title="Y-86指令功能速查">
+      <i class="fa fa-chevron-left"></i> Y-86指令功能速查
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-
-     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/01/Markdown%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/maimai.jpg">
-      <meta itemprop="name" content="阿良">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Muziyu's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/04/01/Markdown%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">自制markdown语法说明</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-04-01 16:00:26" itemprop="dateCreated datePublished" datetime="2023-04-01T16:00:26+08:00">2023-04-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-04-03 00:05:11" itemprop="dateModified" datetime="2023-04-03T00:05:11+08:00">2023-04-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/notes/" itemprop="url" rel="index"><span itemprop="name">notes</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<h2 id="段落："><a href="#段落：" class="headerlink" title="段落："></a>段落：</h2><ol>
-<li><strong>“—-”</strong>  ： 分割线如上  </li>
-<li><strong>“两个空格加换行”</strong>  ： 换行  </li>
-<li><strong>“中间隔一个空行”</strong> ：创建段落</li>
-</ol>
-<hr>
-<h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><ol>
-<li><strong>粗体</strong> ： 四个星号中间包围  </li>
-<li><strong>斜体</strong> ： 两个星号中间  </li>
-<li><em><strong>粗体加斜体</strong></em> ： 三个星号中间包围着</li>
-</ol>
-<hr>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ol>
-<li><strong>引用块</strong> ： “&gt;”在大于号后面添加内容即可  </li>
-<li><strong>多段落引用</strong>： “&gt;”在段落与段落之间的空行上面也加入“&gt;”  </li>
-<li><strong>引用格式</strong>：引用块中同样遵循Markdown格式  </li>
-<li><strong>文内链接</strong>：***<a target="_blank" rel="noopener" href="http://lmuziyu.cn/" title="点开就是我放的本站的网址">作者的网站</a>***,【】（）中括号里面是文本内容，小括号是链接地址 ，给出链接地址之后可以加“”,在双引号里编辑提示。可以被星号强调以及斜体</li>
-</ol>
-<hr>
-<h2 id="文内格式"><a href="#文内格式" class="headerlink" title="文内格式"></a>文内格式</h2><ol>
-<li><p><strong>列表</strong> ： 数字列表直接输入数字“1.”，并在小数点后加空格</p>
-</li>
-<li><p><strong>无序列表</strong>：用“-”代替“1.”</p>
-</li>
-<li><p><strong>在列表中保留元素</strong>：加入一个tab缩进</p>
-<ul>
-<li><strong>嵌套列表</strong>：加入tab缩进之后继续使用“1.”或者“-”</li>
-</ul>
-</li>
-<li><p><strong>代码块</strong>：直接缩进四个空格，如果在列表中，缩进8个空格,与正文中间留空行  </p>
-<pre><code> #include&lt;stdio.h&gt;  
- int  main(void)  &#123;  
-     printf(&quot;hello,world!&quot;);
-     return 0;
- &#125;
-</code></pre>
-</li>
-<li><p><strong>单词或短语转为代码</strong>：“<code>code time</code>”,用反引号标注起来  </p>
-</li>
-<li><p><strong>图片</strong>：要添加图像，请添加感叹号（!），然后在中括号中添加替代文本，并在小括号中添加图像资源的路径</p>
-</li>
-<li><p><strong>转义字符</strong>： 显示Markdown语法所占用的原有的字符，“&#x2F;”后面添加即可，”\ *” &#x3D; *</p>
-</li>
-</ol>
-<hr>
-<p>##高级语法</p>
-<p><strong>表格</strong>  </p>
-<blockquote>
-<p>表格使用 | 作为竖线分隔符，在第二行使用|—:|来确定对齐方式<br>比如：   </p>
-</blockquote>
-<p>##突然发现  </p>
-<blockquote>
-<p>其实使用markdown自带的编辑器里面可以很方便地插入一些段落，所以对于基础语法熟练使用即可了，高级语法完全就可以直接插入段就行，欧克，以后不会再补充这个markdown了。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/01/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/maimai.jpg">
-      <meta itemprop="name" content="阿良">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Muziyu's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/04/01/hello-world/" class="post-title-link" itemprop="url">第一篇博客</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-04-01 13:25:00" itemprop="dateCreated datePublished" datetime="2023-04-01T13:25:00+08:00">2023-04-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-04-02 23:32:00" itemprop="dateModified" datetime="2023-04-02T23:32:00+08:00">2023-04-02</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="为什么有这篇博客"><a href="#为什么有这篇博客" class="headerlink" title="为什么有这篇博客"></a>为什么有这篇博客</h3><p>emmm，起因是在b乎上面刷到了别人做的博客网站，感觉很酷炫，很有意思，自己也是将来要成为程序猿的人，为什么不自己做一个呢？网上的教程也有很多。我为了简单一点，能够满足自己日常使用就可以了，于是我选择用Hexo加上git以及npm来搭建这个框架，截止到目前为止（3.31），整体还是十分简陋，但是有一个以自己名字命名并且可以畅所欲言的地方的感觉已经让我十分迷恋了！这种感觉不同于任何社交平台，因为理论上来说，你的一切数据以及账户以及发表在该平台下的言论，以及与他人的互动也许可能有一天就会随着该平台的倒下而消失。而且我本身是个不爱表达的人，因为潜意识里总是担心被不怀好意者窥探，个人博客倒是让我感觉没有了那么多的束缚。希望能越做越好，起码这是我的第一个尝试，以后可能会有功能更完善，界面更漂亮的博客，但是这个是我的第一个精神家园。~~~~撒花~~~~~~ </p>
-<h3 id="自我介绍"><a href="#自我介绍" class="headerlink" title="自我介绍"></a>自我介绍</h3><p>长沙某高校大二在读本科生，计算机专业小白。</p>
-<h3 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h3><p>鹅号：3011109691。（直接挂这里不会被盗吧QAQ）<br>就先放个QQ在这里算了，暂时想不到些什么。</p>
-<h3 id="一些看法"><a href="#一些看法" class="headerlink" title="一些看法"></a>一些看法</h3><p><strong>博客会不会过时？</strong>  </p>
-<p>应该不会吧，毕竟感觉每个博客都凝聚了每个人的心血，不会轻易放弃的。再者，现在公共博客平台上的内容属实是太多太杂，导致一些真正优质的博客很难被找到，经常性的问题是，我被某个问题困住了，在搜索了诸多平台之后才能找到一个合适的解决方案，而下次犯同样的错误时，也没有记录。折腾来去也会很浪费时间。 即使现在朋友圈和微博qq空间等分享的平台日益增多，我觉得博客还是一个比较不错的分享方式，期待一下吧。自己在上面写的一些简单易懂的知识也可以随时查看。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
 
           </div>
           
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81ODI4OC8zNDc1MQ=="></div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -938,6 +602,7 @@ instruction = &#39;&#39;
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%B2%E8%AF%9D%E5%B0%8F%E8%AF%B4"><span class="nav-number">1.</span> <span class="nav-text">闲话小说</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OK%EF%BC%8C%E8%AF%9D%E4%B8%8D%E5%A4%9A%E8%AF%B4%EF%BC%8C%E7%9B%B4%E6%8E%A5%E6%AD%A3%E6%96%87"><span class="nav-number">2.</span> <span class="nav-text">OK，话不多说，直接正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%91%A8%E6%9C%9F%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">单周期原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E4%B8%AA%E5%87%BD%E6%95%B0%E7%9A%84%E7%BC%96%E5%86%99"><span class="nav-number">3.</span> <span class="nav-text">各个函数的编写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E6%8C%87"><span class="nav-number">3.1.</span> <span class="nav-text">取指</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%91%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">译码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C"><span class="nav-number">3.3.</span> <span class="nav-text">执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E5%AD%98"><span class="nav-number">3.4.</span> <span class="nav-text">访存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%9B%9E"><span class="nav-number">3.5.</span> <span class="nav-text">写回</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PC%E7%9A%84%E6%9B%B4%E6%96%B0"><span class="nav-number">3.6.</span> <span class="nav-text">PC的更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%90%8E%E9%99%84%E4%B8%8A%E5%AE%9A%E4%B9%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8F%98%E9%87%8F%EF%BC%88%E5%B8%A6%E6%B3%A8%E9%87%8A%E7%9A%84%EF%BC%89"><span class="nav-number">3.7.</span> <span class="nav-text">最后附上定义的初始变量（带注释的）</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1078,6 +743,21 @@ instruction = &#39;&#39;
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
 
 </body>
 </html>
