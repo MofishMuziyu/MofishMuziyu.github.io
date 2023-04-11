@@ -187,6 +187,126 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/12/quicksort/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/maimai.jpg">
+      <meta itemprop="name" content="阿良">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Muziyu's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/04/12/quicksort/" class="post-title-link" itemprop="url">quicksort</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-04-12 00:01:34 / 修改时间：00:07:44" itemprop="dateCreated datePublished" datetime="2023-04-12T00:01:34+08:00">2023-04-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">-code</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="快速排序C-版：比较简单，所以没有注释："><a href="#快速排序C-版：比较简单，所以没有注释：" class="headerlink" title="快速排序C++版：比较简单，所以没有注释："></a>快速排序C++版：<br>比较简单，所以没有注释：</h2><p><strong>需要注意的一些点就是：</strong>  </p>
+<blockquote>
+<ol>
+<li>声明数组的长度的时候是怎么声明的  </li>
+<li>快排函数以j为边界的时候怎么写的  </li>
+<li>核心思想是分治</li>
+</ol>
+</blockquote>
+<pre><code>#include&lt;iostream&gt;
+using namespace std;
+void quicksort(int q[], int l, int r);
+const int N = 1000010;
+
+int main()&#123;
+    int n;
+    cin&gt;&gt;n;
+    int q[N];
+    for (int i=0;i&lt;n ; i++)&#123;
+        cin&gt;&gt;q[i];
+    &#125;
+    quicksort(q,0,n-1);
+
+    for (int j=0;j&lt;n-1;j++)&#123;
+        cout&lt;&lt;q[j]&lt;&lt;&quot; &quot;;
+    &#125;
+    cout&lt;&lt;q[n-1];
+    return 0;
+
+    &#125;
+    void quicksort(int q[],int l, int r)&#123;
+    	if( l&gt;= r)&#123;
+        return;
+    &#125;
+
+    int i,j,tmp;
+    i = l-1;j = r+1;
+    int x = q[(l+r)&gt;&gt;1];
+    while(i&lt; j)&#123;
+    do i++; while(q[i]&lt; x);
+    do j--; while(q[j] &gt;x);
+    if (i&lt;j)&#123;
+        tmp = q[i];
+        q[i]  = q[j];
+        q[j] = tmp;
+
+    &#125;
+    &#125;
+    quicksort(q,l,j);
+    quicksort(q,j+1,r);
+&#125;
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+     
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/06/Y-86-%E5%8D%95%E5%91%A8%E6%9C%9Fpython%E6%A8%A1%E6%8B%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -953,7 +1073,7 @@ instruction = &#39;&#39;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -966,7 +1086,7 @@ instruction = &#39;&#39;
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
