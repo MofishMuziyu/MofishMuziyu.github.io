@@ -210,10 +210,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-04-12 00:01:34 / 修改时间：00:07:44" itemprop="dateCreated datePublished" datetime="2023-04-12T00:01:34+08:00">2023-04-12</time>
+              <time title="创建时间：2023-04-12 00:01:34" itemprop="dateCreated datePublished" datetime="2023-04-12T00:01:34+08:00">2023-04-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-04-13 08:22:47" itemprop="dateModified" datetime="2023-04-13T08:22:47+08:00">2023-04-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -235,58 +241,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="快速排序C-版：比较简单，所以没有注释："><a href="#快速排序C-版：比较简单，所以没有注释：" class="headerlink" title="快速排序C++版：比较简单，所以没有注释："></a>快速排序C++版：<br>比较简单，所以没有注释：</h2><p><strong>需要注意的一些点就是：</strong>  </p>
-<blockquote>
-<ol>
-<li>声明数组的长度的时候是怎么声明的  </li>
-<li>快排函数以j为边界的时候怎么写的  </li>
-<li>核心思想是分治</li>
-</ol>
-</blockquote>
-<pre><code>#include&lt;iostream&gt;
-using namespace std;
-void quicksort(int q[], int l, int r);
-const int N = 1000010;
-
-int main()&#123;
-    int n;
-    cin&gt;&gt;n;
-    int q[N];
-    for (int i=0;i&lt;n ; i++)&#123;
-        cin&gt;&gt;q[i];
-    &#125;
-    quicksort(q,0,n-1);
-
-    for (int j=0;j&lt;n-1;j++)&#123;
-        cout&lt;&lt;q[j]&lt;&lt;&quot; &quot;;
-    &#125;
-    cout&lt;&lt;q[n-1];
-    return 0;
-
-    &#125;
-    void quicksort(int q[],int l, int r)&#123;
-    	if( l&gt;= r)&#123;
-        return;
-    &#125;
-
-    int i,j,tmp;
-    i = l-1;j = r+1;
-    int x = q[(l+r)&gt;&gt;1];
-    while(i&lt; j)&#123;
-    do i++; while(q[i]&lt; x);
-    do j--; while(q[j] &gt;x);
-    if (i&lt;j)&#123;
-        tmp = q[i];
-        q[i]  = q[j];
-        q[j] = tmp;
-
-    &#125;
-    &#125;
-    quicksort(q,l,j);
-    quicksort(q,j+1,r);
-&#125;
-</code></pre>
-
+          <p>简介，这是我学习算法的开始，基础算法之快速排序法</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/04/12/quicksort/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -330,10 +293,16 @@ int main()&#123;
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-04-06 20:36:52 / 修改时间：21:04:35" itemprop="dateCreated datePublished" datetime="2023-04-06T20:36:52+08:00">2023-04-06</time>
+              <time title="创建时间：2023-04-06 20:36:52" itemprop="dateCreated datePublished" datetime="2023-04-06T20:36:52+08:00">2023-04-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-04-13 08:24:00" itemprop="dateModified" datetime="2023-04-13T08:24:00+08:00">2023-04-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -355,280 +324,15 @@ int main()&#123;
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="闲话小说"><a href="#闲话小说" class="headerlink" title="闲话小说"></a>闲话小说</h2><p>大二下开的这门课，计算机体系结构与组成原理，我去，两周讲了两大章，还没怎么听，第二节有事还给翘了。布置的作业总算是完成了，虽然没有写流水线，不过在这个基础上再捯拾捯拾应该也就出来了，主要的问题还会多线程怎么在这个软件层次去模拟。</p>
-<hr>
-<h2 id="OK，话不多说，直接正文"><a href="#OK，话不多说，直接正文" class="headerlink" title="OK，话不多说，直接正文"></a>OK，话不多说，直接正文</h2><h3 id="单周期原理"><a href="#单周期原理" class="headerlink" title="单周期原理"></a>单周期原理</h3><p><strong>指令</strong></p>
-<blockquote>
-<p>首先需要知道Y-86的指令是如何编码的，是一个两位的数字，第一位是操作码，第二位是功能码，三四位时寄存器的号，后面八个字节是需要使用的立即数的值（用来基地址寻址或者是立即数跳转），具体的详见，Y-86指令速查，里面有详细地介绍指令。  </p>
-</blockquote>
-<p><strong>各个工作阶段</strong></p>
-<blockquote>
-<p>分为六个阶段：  </p>
-<ul>
-<li>取指  </li>
-<li>译码  </li>
-<li>执行  </li>
-<li>访存  </li>
-<li>写回  </li>
-<li>更新PC</li>
-</ul>
-</blockquote>
-<h2 id="各个函数的编写"><a href="#各个函数的编写" class="headerlink" title="各个函数的编写"></a>各个函数的编写</h2><h3 id="取指"><a href="#取指" class="headerlink" title="取指"></a>取指</h3><pre><code>def fetch(): #没有输出，通过对全局变量的更改来进行操控,取值
-
-global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
-    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF,instruction#引入所有全局变量
-icode = IMem[PC][0]
-ifun = IMem[PC][1]
-
-instruction = Opcode_trans[icode][int(ifun,16)]
-
-if icode == &#39;2&#39;:
-    rA = IMem[PC+1][0]
-    rB = IMem[PC+1][1]
-    valP = PC + 2
-elif icode == &#39;3&#39; and ifun ==&#39;0&#39;:
-    rA = &#39;f&#39;
-    rB = IMem[PC+1][1]
-    valP = PC + 2
-    valC = fetch_immprocess()
-elif icode==&#39;4&#39; or icode ==&#39;5&#39;:
-    rA = IMem[PC+1][0]
-    rB = IMem[PC+1][1]
-    valP = PC + 2
-    valC = fetch_immprocess()
-elif icode ==&#39;6&#39;:
-    rA = IMem[PC+1][0]
-    rB = IMem[PC+1][1]
-    valP = PC + 2
-elif icode==&#39;8&#39; or icode == &#39;7&#39;:
-    valP = PC + 1
-    valC = fetch_immprocess()
-elif icode == &#39;A&#39; or icode ==&#39;B&#39;:
-    rA = IMem[PC+1][0]
-    rB = &#39;f&#39;
-    valP = PC + 2
-elif icode == &#39;0&#39;:
-    Stat == &#39;HLT&#39;
-else:
-    valP = PC + 1
-
-if type(rA)!= int :
-    rA = int(rA,16)
-if  type(rB) != int:
-    rB = int(rB,16)
-return True
-</code></pre>
-<h3 id="译码"><a href="#译码" class="headerlink" title="译码"></a>译码</h3><pre><code>def decode():  ###解码，主要 用来 读寄存器文件以及读
-global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
-    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF ,instruction # 引入所有全局变量
-if instruction==&#39;call&#39;:
-    valB = Register[4]
-elif instruction==&#39;ret&#39;:
-    valA = Register[4]
-    valB = Register[4]
-elif instruction==&#39;pushq&#39;:
-    valA = Register[rA]
-    valB = Register[4]
-elif instruction==&#39;popq&#39;:
-    valA = Register[rA]
-    valB = Register[4]
-elif icode!= 7 and icode !=0 and icode!= 1:
-    if rA  &lt; 15:
-        valA = Register[rA]
-    if rB  &lt; 15:
-        valB = Register[rB]
-if instruction == &#39;halt&#39;:
-    Stat = &#39;HLT&#39;
-return True
-</code></pre>
-<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><pre><code>def execuate():  ###执行
-globals()
-global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
-    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF,instruction  # 引入所有全局变量
-if icode == &#39;6&#39;:
-    if instruction == &#39;addq&#39;:
-        valE = valA + valB
-    elif instruction == &#39;subq&#39;:
-        valE = valB - valA
-    elif instruction == &#39;andq&#39;:
-        valE = valA &amp; valB
-    elif instruction == &#39;xorq&#39;:
-        valE = valA ^valB
-    ZF = 1 if valE == 0 else 0
-    SF = 1 if valE &lt; 0 else 0
-    OF = ((valA&lt;0) == (valB&lt;0)) &amp; ((valE&lt;0) != (valA&lt;0))
-if instruction == &#39;rrmovq&#39;:
-    valE = valA
-elif instruction == &#39;irmovq&#39;:
-    valE = valC + 0
-elif instruction == &#39;rmmovq&#39;:
-    valE = valB + valC
-elif instruction == &#39;mrmovq&#39;:
-    valE = valB + valC
-elif instruction == &#39;jmp&#39;:
-    Cnd = 1
-elif instruction==&#39;jle&#39;:
-    Cnd = (SF^OF)|ZF
-elif instruction == &#39;je&#39;:
-    Cnd = ZF
-elif instruction == &#39;jl&#39;:
-    Cnd =SF^OF
-elif instruction == &#39;jne&#39;:
-    Cnd = 1-ZF
-elif instruction ==&#39;jge&#39;:
-    Cnd = ~(SF^OF)
-elif instruction == &#39;jg&#39;:
-    Cnd = ~(SF^OF) &amp; ~ZF
-elif instruction == &#39;call&#39;:
-    valE = valB - 8
-elif instruction ==&#39;ret&#39;:
-    valE = valB + 8
-
-return True
-</code></pre>
-<h3 id="访存"><a href="#访存" class="headerlink" title="访存"></a>访存</h3><pre><code>def fetch_mem():####访存阶段,只有写和读的问题，
-                #所以只涉及部分指令pushq ，popq ,call,ret,rmmovq,mrmovq 
-globals()
-global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
-    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF ,instruction # 引入所有全局变量
-if instruction == &#39;rmmovq&#39;:
-    Mem[valE] = valA
-elif instruction ==&#39;mrmovq&#39;:
-    valM = Mem[valE]
-elif instruction == &#39;pushq&#39;:
-    Mem[valE] = valA
-elif instruction == &#39;popq&#39;:
-    valM = Mem[valA]
-elif instruction == &#39;call&#39;:
-    Mem[valE] = valP
-elif instruction ==&#39;ret&#39;:
-    valM = Mem[valE]
-return True
-</code></pre>
-<h3 id="写回"><a href="#写回" class="headerlink" title="写回"></a>写回</h3><pre><code>def write_back(): ###写回阶段，更新各寄存器的值
-globals()
-global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
-    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF ,instruction # 引入所有全局变量
-if icode==&#39;6&#39;:
-    Register[rB] = valE
-if instruction==&#39;rrmovq&#39;:
-    Register[rB] = valE
-elif instruction==&#39;irmovq&#39;:
-    Register[rB] = valE
-elif instruction == &#39;mrmovq&#39;:
-    Register[rA] = valM
-elif instruction == &#39;pushq&#39;:
-    Register[4] = valE
-elif  instruction == &#39;popq&#39;:
-    Register[4] = valE
-    Register[rA] =valM
-elif  instruction ==&#39;call&#39;:
-    Register[4] = valE
-elif instruction==&#39;ret&#39;:
-    Register[4] = valE
-
-return True
-</code></pre>
-<h3 id="PC的更新"><a href="#PC的更新" class="headerlink" title="PC的更新"></a>PC的更新</h3><pre><code>def refresh_PC():  # 更新PC的值，如果没有跳转条件就直接把valP赋给它就好了，如果有的话就把跳转的结果赋给PC
-globals()
-global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
-    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF ,instruction # 引入所有全局变量
-if icode == &#39;7&#39;:
-    if Cnd ==1:
-        PC = valC
-    else:
-        PC = valP
-if instruction==&#39;ret&#39;:
-    PC = valM
-elif instruction == &#39;call&#39;:
-    PC = valC
-elif instruction==&#39;jne&#39; and Cnd == 1:
-    PC = valC
-else:
-    PC = valP
-
-return True
-</code></pre>
-<p>###主体循环<br>    def cycle():<br>    globals()</p>
-<pre><code>global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
-    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF ,instruction # 引入所有全局变量
-PC = PC % 1000
-while(True):
-    if Stat == &#39;HLT&#39;:
-        print(&quot;从1加到100的结果为&quot;,end=&quot;&quot;)
-        print(Register[0])
-        break
-    fetch()
-    decode()
-    execuate()
-    fetch_mem()
-    write_back()
-    refresh_PC()
-if __name__ == main:
-    cycle()
-</code></pre>
-<h3 id="最后附上定义的初始变量（带注释的）"><a href="#最后附上定义的初始变量（带注释的）" class="headerlink" title="最后附上定义的初始变量（带注释的）"></a>最后附上定义的初始变量（带注释的）</h3><pre><code>icode = 0
-ifun = 0
-rA =  0
-rB =  0
-valC = 0
-valP = 0
-Register = [0]*15           # ## 十五个寄存器
-Opcode_trans = &#123;            # ## opcode翻译指令
-&quot;0&quot;: [&quot;halt&quot;],
-&quot;1&quot;: [&quot;nop&quot;],
-&quot;2&quot;: [&quot;rrmovq&quot;, &quot;cmovle&quot;, &quot;cmovl&quot;, &quot;cmove&quot;, &quot;cmovne&quot;, &quot;cmovge&quot;, &quot;cmovg&quot;],
-&quot;3&quot;: [&quot;irmovq&quot;],
-&quot;4&quot;: [&quot;rmmovq&quot;],
-&quot;5&quot;: [&quot;mrmovq&quot;],
-&quot;6&quot;: [&quot;addq&quot;, &quot;subq&quot;, &quot;andq&quot;, &quot;xorq&quot;],
-&quot;7&quot;: [&quot;jmp&quot;, &quot;jle&quot;, &quot;jl&quot;, &quot;je&quot;, &quot;jne&quot;, &quot;jg&quot;],
-&quot;8&quot;: [&quot;call&quot;],
-&quot;9&quot;: [&quot;ret&quot;],
-&quot;A&quot;: [&quot;pushq&quot;],
-&quot;B&quot;: [&quot;popq&quot;]
-&#125;
-op_length = &#123;
-&#39;00&#39;: 1,&#39;10&#39;:1,&#39;20&#39;:2,&#39;21&#39;:2,&#39;22&#39;:2,&#39;23&#39;:2,&#39;24&#39;:2,&#39;25&#39;:2,&#39;26&#39;:2,
-&#39;30&#39;:10,&#39;40&#39;:10,&#39;50&#39;:10,
-&#39;71&#39;:9,&#39;80&#39;:9,
-&#39;70&#39;:9,&#39;72&#39;:9,&#39;73&#39;:9,&#39;74&#39;:9,&#39;75&#39;:9,&#39;76&#39;:9,
-&#39;60&#39;:2,&#39;61&#39;:2,&#39;62&#39;:2,&#39;63&#39;:2,
-&#39;90&#39;:1,
-&#39;A0&#39;:2,
-&#39;B0&#39;:2
-&#125;
-
-op_list = op_length.keys()
-PC = 0                 # ## PC地址
-IMem=[&#39;10&#39;]*1000000        # ##指令存储器
-Mem = [0]*1000              # ##数据存储器
-Stat = &quot;AOK&quot;       # ##Y86-64异常状态码（AOK，HLT，ADR，INS）
-valA = 0           # # #寄存器A的值
-valB = 0           # ##寄存器B的值
-valE = 0           # ##ALU运算结果，写回值
-valM = 0            # ##写回值
-dstE = 0            # ##寄存器写回E
-dstM = 0            # ##寄存器写回M
-
-aluA = 0
-aluB = 0
-
-Cnd = 0             ###跳转指令码
-CC = &#39;000&#39;             ###条件码
-ZF = 0
-SF = 0
-OF = 0
-file = &#39;toy3.coe&#39;
-instruction = &#39;&#39;
-##特殊情况   pushq %rsp ; popq % &#123;A040&#125; &#123;B040&#125;
-
-
-##解决方法   先压入栈里，再减8 ； 先弹出值给rsp，再加8；
-</code></pre>
-<hr>
-<p><strong>单周期的实现就这么多了，流水线是一个改进的方向，应该还比较好改进吧，不过也不想做了，就这样吧，以后有时间再改进，初步的改进方式，肯定是给全局变量重新在每一个阶段都分配一个值，然后各个阶段之间加入寄存器，控制冲突和数据冲突也可以解决，但是真正的问题是，一个顺序执行的程序 ，你如何保证 成为一个流水线的并行模式呢，毕竟软件不是硬件，硬件空闲了就可以直接用，你的程序执行到哪里就是哪里，不会同时执行好几个函数，所以最终的问题又回到并发上面了，暂时没学，留待后效</strong></p>
-
+          <p>这是一次计算机系统的作业，我还有很大的改进的空间，但是这样系统地去写一个东西还是很有成就感，遂记录一下。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/04/06/Y-86-%E5%8D%95%E5%91%A8%E6%9C%9Fpython%E6%A8%A1%E6%8B%9F/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -672,10 +376,16 @@ instruction = &#39;&#39;
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-04-06 10:27:55 / 修改时间：21:14:26" itemprop="dateCreated datePublished" datetime="2023-04-06T10:27:55+08:00">2023-04-06</time>
+              <time title="创建时间：2023-04-06 10:27:55" itemprop="dateCreated datePublished" datetime="2023-04-06T10:27:55+08:00">2023-04-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-04-13 08:25:11" itemprop="dateModified" datetime="2023-04-13T08:25:11+08:00">2023-04-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -697,97 +407,15 @@ instruction = &#39;&#39;
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="暂时空着，以后写"><a href="#暂时空着，以后写" class="headerlink" title="暂时空着，以后写"></a>暂时空着，以后写</h2><h2 id="halt指令-00"><a href="#halt指令-00" class="headerlink" title="halt指令 00"></a>halt指令 00</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可，取指阶段需要将Stat置为HLT  </li>
-<li>译码：无  </li>
-<li>执行：无</li>
-<li>访存：无  </li>
-<li>写回：无</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-10"><a href="#nop指令-10" class="headerlink" title="nop指令  10"></a>nop指令  10</h2><blockquote>
-<ul>
-<li>取指： </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令"><a href="#nop指令" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-1"><a href="#nop指令-1" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-2"><a href="#nop指令-2" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-3"><a href="#nop指令-3" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-4"><a href="#nop指令-4" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-5"><a href="#nop指令-5" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-<h2 id="nop指令-6"><a href="#nop指令-6" class="headerlink" title="nop指令"></a>nop指令</h2><blockquote>
-<ul>
-<li>取指：没什么特别，只有一个字节，取值完valP &#x3D; PC +1 即可  </li>
-<li>译码：  </li>
-<li>执行：  </li>
-<li>访存：  </li>
-<li>写回：</li>
-</ul>
-</blockquote>
-<hr>
-
+          <p>Y-86指令集速查，虽然目前啥也没写，因为做完发现其实自己已经会了，而且基本上看指令的名字也明白了。所以先空着吧</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/04/06/Y-86%E6%8C%87%E4%BB%A4%E5%8A%9F%E8%83%BD%E9%80%9F%E6%9F%A5/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -839,7 +467,7 @@ instruction = &#39;&#39;
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-04-03 00:05:11" itemprop="dateModified" datetime="2023-04-03T00:05:11+08:00">2023-04-03</time>
+                <time title="修改时间：2023-04-13 08:19:49" itemprop="dateModified" datetime="2023-04-13T08:19:49+08:00">2023-04-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -862,62 +490,15 @@ instruction = &#39;&#39;
     <div class="post-body" itemprop="articleBody">
 
       
-          <hr>
-<h2 id="段落："><a href="#段落：" class="headerlink" title="段落："></a>段落：</h2><ol>
-<li><strong>“—-”</strong>  ： 分割线如上  </li>
-<li><strong>“两个空格加换行”</strong>  ： 换行  </li>
-<li><strong>“中间隔一个空行”</strong> ：创建段落</li>
-</ol>
-<hr>
-<h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><ol>
-<li><strong>粗体</strong> ： 四个星号中间包围  </li>
-<li><strong>斜体</strong> ： 两个星号中间  </li>
-<li><em><strong>粗体加斜体</strong></em> ： 三个星号中间包围着</li>
-</ol>
-<hr>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ol>
-<li><strong>引用块</strong> ： “&gt;”在大于号后面添加内容即可  </li>
-<li><strong>多段落引用</strong>： “&gt;”在段落与段落之间的空行上面也加入“&gt;”  </li>
-<li><strong>引用格式</strong>：引用块中同样遵循Markdown格式  </li>
-<li><strong>文内链接</strong>：***<a target="_blank" rel="noopener" href="http://lmuziyu.cn/" title="点开就是我放的本站的网址">作者的网站</a>***,【】（）中括号里面是文本内容，小括号是链接地址 ，给出链接地址之后可以加“”,在双引号里编辑提示。可以被星号强调以及斜体</li>
-</ol>
-<hr>
-<h2 id="文内格式"><a href="#文内格式" class="headerlink" title="文内格式"></a>文内格式</h2><ol>
-<li><p><strong>列表</strong> ： 数字列表直接输入数字“1.”，并在小数点后加空格</p>
-</li>
-<li><p><strong>无序列表</strong>：用“-”代替“1.”</p>
-</li>
-<li><p><strong>在列表中保留元素</strong>：加入一个tab缩进</p>
-<ul>
-<li><strong>嵌套列表</strong>：加入tab缩进之后继续使用“1.”或者“-”</li>
-</ul>
-</li>
-<li><p><strong>代码块</strong>：直接缩进四个空格，如果在列表中，缩进8个空格,与正文中间留空行  </p>
-<pre><code> #include&lt;stdio.h&gt;  
- int  main(void)  &#123;  
-     printf(&quot;hello,world!&quot;);
-     return 0;
- &#125;
-</code></pre>
-</li>
-<li><p><strong>单词或短语转为代码</strong>：“<code>code time</code>”,用反引号标注起来  </p>
-</li>
-<li><p><strong>图片</strong>：要添加图像，请添加感叹号（!），然后在中括号中添加替代文本，并在小括号中添加图像资源的路径</p>
-</li>
-<li><p><strong>转义字符</strong>： 显示Markdown语法所占用的原有的字符，“&#x2F;”后面添加即可，”\ *” &#x3D; *</p>
-</li>
-</ol>
-<hr>
-<p>##高级语法</p>
-<p><strong>表格</strong>  </p>
-<blockquote>
-<p>表格使用 | 作为竖线分隔符，在第二行使用|—:|来确定对齐方式<br>比如：   </p>
-</blockquote>
-<p>##突然发现  </p>
-<blockquote>
-<p>其实使用markdown自带的编辑器里面可以很方便地插入一些段落，所以对于基础语法熟练使用即可了，高级语法完全就可以直接插入段就行，欧克，以后不会再补充这个markdown了。</p>
-</blockquote>
-
+          <p>这是一个Markdown语法简介，个人写博客和操作说明几乎不可避免的用到这种语法，因此稍作整理如下：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/04/01/Markdown%E8%AF%AD%E6%B3%95%E9%80%9F%E6%9F%A5%E7%AC%94%E8%AE%B0/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
