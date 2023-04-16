@@ -9,8 +9,37 @@
     <atom:link href="http://example.com/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Thu, 13 Apr 2023 00:22:47 GMT</pubDate>
+    <pubDate>Sun, 16 Apr 2023 15:56:37 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>diary</title>
+      <link>http://example.com/2023/04/16/diary/</link>
+      <guid>http://example.com/2023/04/16/diary/</guid>
+      <pubDate>Sun, 16 Apr 2023 15:36:54 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h1 id=&quot;第一次周记&quot;&gt;&lt;a href=&quot;#第一次周记&quot; class=&quot;headerlink&quot; title=&quot;第一次周记&quot;&gt;&lt;/a&gt;第一次周记&lt;/h1&gt;&lt;hr&gt;
+&lt;ul&gt;
+&lt;li&gt;学习方面：&lt;ul&gt;
+&lt;li&gt;完成了两个大实验和数据结构长整数，快排。但是遗憾的是没有落实自己学</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="第一次周记"><a href="#第一次周记" class="headerlink" title="第一次周记"></a>第一次周记</h1><hr><ul><li>学习方面：<ul><li>完成了两个大实验和数据结构长整数，快排。但是遗憾的是没有落实自己学习算法的计划</li><li>技术拆解拆了，但是没有源码，自己重头开始做的话比较困难，所以下周主要是进行一些搜集工作</li><li>专业课方面，周五开了一个有关自己的培养方案的问题，下周有空需要去了解一下，自己以后都会有什么课，另外再仔细读一读培养方案</li><li>概率论现在学的跟什么一样，还是得上课哪怕不听，也得自己看一遍书吧，下周开始，别摆烂</li></ul><hr></li><li>生活上：<ul><li>本周跑步四次，一二三七，周四下雨，周五周六纯摆子，总计10km。下周可以继续这个强度，但是应该多跑几天，新鞋子也快到了。</li><li>五一出行计划暂定就这样，4.29高中同学聚一聚，30号去武汉转悠转悠，长长见识，不能总待在自己的小世界里，钱不要不舍得花</li><li>脸上因为熬夜比较长痘，所以下周可以早睡一些，涂一涂那个软膏也会好很多</li></ul><hr></li><li>人际关系上：怎么说呢，？感觉自己还是没有跳出自己滴舒适圈，只能说这么多，世界太复杂了，我又想的太多，有时候确实比较痛苦，那就到这吧。</li></ul><hr>]]></content:encoded>
+      
+      
+      <category domain="http://example.com/categories/%E9%9A%8F%E7%AC%94/">-随笔</category>
+      
+      
+      <category domain="http://example.com/tags/%E6%84%9F%E6%82%9F/">-感悟</category>
+      
+      
+      <comments>http://example.com/2023/04/16/diary/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>quicksort</title>
