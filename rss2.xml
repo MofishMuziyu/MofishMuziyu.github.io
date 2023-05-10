@@ -51,7 +51,7 @@
       
       
       
-      <content:encoded><![CDATA[<h2 id="快速排序C-版：比较简单，所以没有注释："><a href="#快速排序C-版：比较简单，所以没有注释：" class="headerlink" title="快速排序C++版：比较简单，所以没有注释："></a>快速排序C++版：<br>比较简单，所以没有注释：</h2><p><strong>需要注意的一些点就是：</strong>  </p><blockquote><ol><li>声明数组的长度的时候是怎么声明的  </li><li>快排函数以j为边界的时候怎么写的  </li><li>核心思想是分治</li></ol></blockquote><pre><code>#include&lt;iostream&gt;using namespace std;void quicksort(int q[], int l, int r);const int N = 1000010;       //声明int main()&#123;           //主函数    int n;    cin&gt;&gt;n;    int q[N];    for (int i=0;i&lt;n ; i++)&#123;        cin&gt;&gt;q[i];    &#125;    quicksort(q,0,n-1);    for (int j=0;j&lt;n-1;j++)&#123;        cout&lt;&lt;q[j]&lt;&lt;&quot; &quot;;    &#125;    cout&lt;&lt;q[n-1];    return 0;    &#125;</code></pre><p><strong>快排函数</strong><br>        void quicksort(int q[],int l, int r){<br>        if( l&gt;&#x3D; r){      &#x2F;&#x2F;递归出口<br>            return;<br>        }</p><pre><code>    int i,j,tmp;    i = l-1;j = r+1;    int x = q[(l+r)&gt;&gt;1];   //初始化分解条件    while(i&lt; j)&#123;            //循环过程    do i++; while(q[i]&lt; x);    do j--; while(q[j] &gt;x);    if (i&lt;j)&#123;        tmp = q[i];        q[i]  = q[j];        q[j] = tmp;    &#125;    &#125;    quicksort(q,l,j);            //分治      quicksort(q,j+1,r);//分治&#125;</code></pre>]]></content:encoded>
+      <content:encoded><![CDATA[<h2 id="快速排序C-版：比较简单，所以没有注释："><a href="#快速排序C-版：比较简单，所以没有注释：" class="headerlink" title="快速排序C++版：比较简单，所以没有注释："></a>快速排序C++版：<br>比较简单，所以没有注释：</h2><p><strong>需要注意的一些点就是：</strong>  </p><blockquote><ol><li>声明数组的长度的时候是怎么声明的  </li><li>快排函数以j为边界的时候怎么写的  </li><li>核心思想是分治</li></ol></blockquote><pre><code>#include&lt;iostream&gt;using namespace std;void quicksort(int q[], int l, int r);const int N = 1000010;       //声明int main()&#123;           //主函数    int n;    cin&gt;&gt;n;    int q[N];    for (int i=0;i&lt;n ; i++)&#123;        cin&gt;&gt;q[i];    &#125;    quicksort(q,0,n-1);    for (int j=0;j&lt;n-1;j++)&#123;        cout&lt;&lt;q[j]&lt;&lt;&quot; &quot;;    &#125;    cout&lt;&lt;q[n-1];    return 0;    &#125;</code></pre><p><strong>快排函数</strong>  </p><pre><code>    void quicksort(int q[],int l, int r)&#123;    if( l&gt;= r)&#123;      //递归出口        return;         &#125;    int i,j,tmp;    i = l-1;j = r+1;    int x = q[(l+r)&gt;&gt;1];   //初始化分解条件    while(i&lt; j)&#123;            //循环过程    do i++; while(q[i]&lt; x);    do j--; while(q[j] &gt;x);    if (i&lt;j)&#123;        tmp = q[i];        q[i]  = q[j];        q[j] = tmp;    &#125;    &#125;    quicksort(q,l,j);            //分治      quicksort(q,j+1,r);//分治&#125;</code></pre>]]></content:encoded>
       
       
       <category domain="http://example.com/categories/code/">-code</category>
@@ -80,9 +80,9 @@
       <category domain="http://example.com/categories/code/">-code</category>
       
       
-      <category domain="http://example.com/tags/%E6%8C%87%E4%BB%A4%E9%9B%86/">指令集</category>
-      
       <category domain="http://example.com/tags/%E4%BD%9C%E4%B8%9A/">作业</category>
+      
+      <category domain="http://example.com/tags/%E6%8C%87%E4%BB%A4%E9%9B%86/">指令集</category>
       
       
       <comments>http://example.com/2023/04/06/Y-86-%E5%8D%95%E5%91%A8%E6%9C%9Fpython%E6%A8%A1%E6%8B%9F/#disqus_thread</comments>
