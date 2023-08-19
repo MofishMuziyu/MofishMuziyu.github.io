@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/%E6%A0%91%E5%8F%B6_sleaves.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/%E6%A0%91%E5%8F%B6_sleaves.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.1/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="第一次周记  学习方面： 完成了两个大实验和数据结构长整数，快排。但是遗憾的是没有落实自己学习算法的计划 技术拆解拆了，但是没有源码，自己重头开始做的话比较困难，所以下周主要是进行一些搜集工作 专业课方面，周五开了一个有关自己的培养方案的问题，下周有空需要去了解一下，自己以后都会有什么课，另外再仔细读一读培养方案 概率论现在学的跟什么一样，还是得上课哪怕不听，也得自己看一遍书吧，下周开始，别摆烂">
+<meta property="og:type" content="article">
+<meta property="og:title" content="diary">
+<meta property="og:url" content="http://example.com/2023/04/16/diary/index.html">
+<meta property="og:site_name" content="My_Little_Brony&#39;s Blog">
+<meta property="og:description" content="第一次周记  学习方面： 完成了两个大实验和数据结构长整数，快排。但是遗憾的是没有落实自己学习算法的计划 技术拆解拆了，但是没有源码，自己重头开始做的话比较困难，所以下周主要是进行一些搜集工作 专业课方面，周五开了一个有关自己的培养方案的问题，下周有空需要去了解一下，自己以后都会有什么课，另外再仔细读一读培养方案 概率论现在学的跟什么一样，还是得上课哪怕不听，也得自己看一遍书吧，下周开始，别摆烂">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-16T15:36:54.000Z">
+<meta property="article:modified_time" content="2023-05-18T13:12:54.384Z">
+<meta property="article:author" content="aliang">
+<meta property="article:tag" content="-感悟">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/04/16/diary/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>diary | My_Little_Brony's Blog</title><meta name="robots" content="noindex">
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/rss2.xml" title="My_Little_Brony's Blog" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">My_Little_Brony's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="fa fa-file fa-fw"></i>资源</a>
+
+  </li>
+        <li class="menu-item menu-item-code">
+
+    <a href="/code/" rel="section"><i class="fa fa-code fa-fw"></i>代码</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+        <li class="menu-item menu-item-notes">
+
+    <a href="/notes/" rel="section"><i class="fa fa-notes fa-fw"></i>notes</a>
+
+  </li>
+        <li class="menu-item menu-item-留言板">
+
+    <a href="/guestbook/" rel="section"><i class="newpaper-o fa-fw"></i>留言板</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/16/diary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/maimai.jpg">
+      <meta itemprop="name" content="aliang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My_Little_Brony's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          diary
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-16 23:36:54" itemprop="dateCreated datePublished" datetime="2023-04-16T23:36:54+08:00">2023-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-18 21:12:54" itemprop="dateModified" datetime="2023-05-18T21:12:54+08:00">2023-05-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">-随笔</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="第一次周记"><a href="#第一次周记" class="headerlink" title="第一次周记"></a>第一次周记</h2><hr>
+<ul>
+<li>学习方面：<ul>
+<li>完成了两个大实验和数据结构长整数，快排。但是遗憾的是没有落实自己学习算法的计划</li>
+<li>技术拆解拆了，但是没有源码，自己重头开始做的话比较困难，所以下周主要是进行一些搜集工作</li>
+<li>专业课方面，周五开了一个有关自己的培养方案的问题，下周有空需要去了解一下，自己以后都会有什么课，另外再仔细读一读培养方案</li>
+<li>概率论现在学的跟什么一样，还是得上课哪怕不听，也得自己看一遍书吧，下周开始，别摆烂</li>
+</ul>
+<hr>
+</li>
+<li>生活上：<ul>
+<li>本周跑步四次，一二三七，周四下雨，周五周六纯摆子，总计10km。下周可以继续这个强度，但是应该多跑几天，新鞋子也快到了。</li>
+<li>五一出行计划暂定就这样，4.29高中同学聚一聚，30号去武汉转悠转悠，长长见识，不能总待在自己的小世界里，钱不要不舍得花</li>
+<li>脸上因为熬夜比较长痘，所以下周可以早睡一些，涂一涂那个软膏也会好很多</li>
+</ul>
+<hr>
+</li>
+<li>人际关系上：怎么说呢，？感觉自己还是没有跳出自己滴舒适圈，只能说这么多，世界太复杂了，我又想的太多，有时候确实比较痛苦，那就到这吧。</li>
+</ul>
+<hr>
+<h2 id="五一游记"><a href="#五一游记" class="headerlink" title="五一游记"></a>五一游记</h2><hr>
+<h3 id="长沙"><a href="#长沙" class="headerlink" title="长沙"></a>长沙</h3><p>   还算是半个本地人了，五一假期第一天在宿舍补作业。第二天带着左和耿，然后我们几个在长沙的人来了一次小聚。感觉真的很好，多年的同学，久别重逢，那种欣喜的感觉是别的事情所无法带来的。第一天早上九他睡到10点没起来，然后我们直接去他酒店喊他去了哈哈哈哈哈哈。  </p>
+<blockquote>
+<ul>
+<li>上午去了一个电玩城，唱了唱歌，抓娃娃一个没抓到，不过3D赛车游戏是真的好玩  </li>
+<li>中午一点半才吃饭，在大碗先生，感觉在长沙也算比较实惠的店了，味道也不差，比较适合3,4个人去吃，一人点一个菜，或者一个半，吃的比较饱  </li>
+<li>下午按计划去橘子洲玩了，人真的多，ljw没预约票，且我来长沙这么久这是第一次去橘子洲，所以只有我陪他俩去了。没坐观光车，徒步3.8公里，来回一趟就是快8km了，真的累啊，腿快走断了。</li>
+<li>晚上就是去吃个烧烤，喝点小酒，美汁汁哈哈哈哈哈哈，当天两点快3点才睡，在耿的酒店里，</li>
+</ul>
+</blockquote>
+<p>下次再聚，就是不知道什么时候了</p>
+<h3 id="武汉"><a href="#武汉" class="headerlink" title="武汉"></a>武汉</h3><p>话说2点睡，早上6点起，打个车直奔高铁站，真的很极限，如果不是因为改签的话，就要差点没赶上车，在高铁上睡了一个半小时，然后开始了特种兵旅游</p>
+<h4 id="4-30"><a href="#4-30" class="headerlink" title="4.30"></a>4.30</h4><blockquote>
+<p>早上到了武汉，先找了一家店坐了一会等等他们。下午去远观了黄鹤楼，看了长江大桥，进了户部巷（真的拉胯，又挤又难吃）。<br>下午坐了一下轮渡，然后一起去汉口江滩看了看，晚上在附近吃的烧烤，也喝了点小酒，我竟然算是能喝的。。<br>晚上又去了江滩，真的好喜欢江滩的氛围，还遇到了卖唱的高中生，哈哈哈氛围真的很好  </p>
+</blockquote>
+<h4 id="5-1"><a href="#5-1" class="headerlink" title="5.1"></a>5.1</h4><blockquote>
+<ul>
+<li>早上硬撑着七点半起来，在地铁吃了早饭，没吃热干面，吃了凉面，感觉其实也没什么</li>
+<li>依然是远观黄鹤楼，人太多了，不想上去了，下次有机会再去吧还是，在粮道街看了看，感觉也不过是很普通的一条街，可能是网红的带动吧，赵师傅油饼包烧麦，妈耶，直接盖住了快10家店的门口哈哈哈哈哈。 </li>
+<li>中午去华科找yjg，顺便在食堂吃了顿饭。  </li>
+<li>下午我们歇了一会，我想去南湖大道的538看一看，圆一下心里的愿望，下一站，茶山刘~  当时那么期待的东西，可是当时实际去看的时候，难免会失落，既是它只是一个普普通通的站台，歌声里的那个站台包含了作者的回忆和青春，但是我只有曾经的一个梦在上面，现在我亲手撕开了那个梦，其实也不过是一个平平凡凡的站台，平平常常的下午。  </li>
+<li>后面一直跟丹阳在玩，带着我在东湖绿道骑了一会车，不过中途去划船了，因为人太多，车被别人扫走了，只能再徒步走回去了。  晚上又去吃了小龙虾，整体还是很不错的，期待下次见面吧。喝趴他！</li>
+</ul>
+</blockquote>
+<h4 id="5-2"><a href="#5-2" class="headerlink" title="5.2"></a>5.2</h4><blockquote>
+<ul>
+<li>这次是真的累了，直接就回去睡了没起来，早上 哪里也没去，去武汉也没有经历过早，哈哈哈哈哈，早上10点起来。  </li>
+<li>下午逛了省博，人依旧多，剑没看到<br>直接回长沙，有种回家的感觉呜呜呜呜，累死了</li>
+</ul>
+</blockquote>
+<!-- flag of hidden posts -->
+    </div>
+
+    
+    
+    
+
+     
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%84%9F%E6%82%9F/" rel="tag"><i class="fa fa-tag"></i>
+          </div>
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81ODI4OC8zNDc1MQ=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%91%A8%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">第一次周记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E4%B8%80%E6%B8%B8%E8%AE%B0"><span class="nav-number">2.</span> <span class="nav-text">五一游记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%BF%E6%B2%99"><span class="nav-number">2.1.</span> <span class="nav-text">长沙</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A6%E6%B1%89"><span class="nav-number">2.2.</span> <span class="nav-text">武汉</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-30"><span class="nav-number">2.2.1.</span> <span class="nav-text">4.30</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">5.1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2"><span class="nav-number">2.2.3.</span> <span class="nav-text">5.2</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="aliang"
+      src="/images/maimai.jpg">
+  <p class="site-author-name" itemprop="name">aliang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/MofishMuziyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;MofishMuziyu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://user.qzone.qq.com/3011109691" title="qq空间 → https:&#x2F;&#x2F;user.qzone.qq.com&#x2F;3011109691" rel="noopener" target="_blank"><i class="fa fa-qq fa-fw"></i>qq空间</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/qing-feng-32-2-86" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;qing-feng-32-2-86" rel="noopener" target="_blank"><i class="gratipay fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://library.nudt.edu.cn/" title="https:&#x2F;&#x2F;library.nudt.edu.cn" rel="noopener" target="_blank">图书馆</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aliang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.1/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>

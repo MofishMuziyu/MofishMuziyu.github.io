@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/%E6%A0%91%E5%8F%B6_sleaves.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/%E6%A0%91%E5%8F%B6_sleaves.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.1/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这是一次计算机系统的作业，我还有很大的改进的空间，但是这样系统地去写一个东西还是很有成就感，遂记录一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Y-86-单周期python模拟">
+<meta property="og:url" content="http://example.com/2023/04/06/Y-86-%E5%8D%95%E5%91%A8%E6%9C%9Fpython%E6%A8%A1%E6%8B%9F/index.html">
+<meta property="og:site_name" content="My_Little_Brony&#39;s Blog">
+<meta property="og:description" content="这是一次计算机系统的作业，我还有很大的改进的空间，但是这样系统地去写一个东西还是很有成就感，遂记录一下。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-06T12:36:52.000Z">
+<meta property="article:modified_time" content="2023-05-18T13:13:50.356Z">
+<meta property="article:author" content="aliang">
+<meta property="article:tag" content="作业">
+<meta property="article:tag" content="指令集">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/04/06/Y-86-%E5%8D%95%E5%91%A8%E6%9C%9Fpython%E6%A8%A1%E6%8B%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Y-86-单周期python模拟 | My_Little_Brony's Blog</title><meta name="robots" content="noindex">
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/rss2.xml" title="My_Little_Brony's Blog" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">My_Little_Brony's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="fa fa-file fa-fw"></i>资源</a>
+
+  </li>
+        <li class="menu-item menu-item-code">
+
+    <a href="/code/" rel="section"><i class="fa fa-code fa-fw"></i>代码</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+        <li class="menu-item menu-item-notes">
+
+    <a href="/notes/" rel="section"><i class="fa fa-notes fa-fw"></i>notes</a>
+
+  </li>
+        <li class="menu-item menu-item-留言板">
+
+    <a href="/guestbook/" rel="section"><i class="newpaper-o fa-fw"></i>留言板</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/06/Y-86-%E5%8D%95%E5%91%A8%E6%9C%9Fpython%E6%A8%A1%E6%8B%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/maimai.jpg">
+      <meta itemprop="name" content="aliang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My_Little_Brony's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Y-86-单周期python模拟
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-06 20:36:52" itemprop="dateCreated datePublished" datetime="2023-04-06T20:36:52+08:00">2023-04-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-05-18 21:13:50" itemprop="dateModified" datetime="2023-05-18T21:13:50+08:00">2023-05-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">-code</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">这是一次计算机系统的作业，我还有很大的改进的空间，但是这样系统地去写一个东西还是很有成就感，遂记录一下。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="闲话"><a href="#闲话" class="headerlink" title="闲话"></a>闲话</h2><p>大二下开的这门课，计算机体系结构与组成原理，我去，两周讲了两大章，还没怎么听，第二节有事还给翘了。布置的作业总算是完成了，虽然没有写流水线，不过在这个基础上再捯拾捯拾应该也就出来了，主要的问题还会多线程怎么在这个软件层次去模拟。</p>
+<hr>
+<h2 id="OK，话不多说，直接正文"><a href="#OK，话不多说，直接正文" class="headerlink" title="OK，话不多说，直接正文"></a>OK，话不多说，直接正文</h2><h3 id="单周期原理"><a href="#单周期原理" class="headerlink" title="单周期原理"></a>单周期原理</h3><p><strong>指令</strong></p>
+<blockquote>
+<p>首先需要知道Y-86的指令是如何编码的，是一个两位的数字，第一位是操作码，第二位是功能码，三四位时寄存器的号，后面八个字节是需要使用的立即数的值（用来基地址寻址或者是立即数跳转），具体的详见，Y-86指令速查，里面有详细地介绍指令。  </p>
+</blockquote>
+<p><strong>各个工作阶段</strong></p>
+<blockquote>
+<p>分为六个阶段：  </p>
+<ul>
+<li>取指  </li>
+<li>译码  </li>
+<li>执行  </li>
+<li>访存  </li>
+<li>写回  </li>
+<li>更新PC</li>
+</ul>
+</blockquote>
+<h2 id="各个函数的编写"><a href="#各个函数的编写" class="headerlink" title="各个函数的编写"></a>各个函数的编写</h2><h3 id="取指"><a href="#取指" class="headerlink" title="取指"></a>取指</h3><pre><code>def fetch(): #没有输出，通过对全局变量的更改来进行操控,取值
+
+global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
+    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF,instruction#引入所有全局变量
+icode = IMem[PC][0]
+ifun = IMem[PC][1]
+
+instruction = Opcode_trans[icode][int(ifun,16)]
+
+if icode == &#39;2&#39;:
+    rA = IMem[PC+1][0]
+    rB = IMem[PC+1][1]
+    valP = PC + 2
+elif icode == &#39;3&#39; and ifun ==&#39;0&#39;:
+    rA = &#39;f&#39;
+    rB = IMem[PC+1][1]
+    valP = PC + 2
+    valC = fetch_immprocess()
+elif icode==&#39;4&#39; or icode ==&#39;5&#39;:
+    rA = IMem[PC+1][0]
+    rB = IMem[PC+1][1]
+    valP = PC + 2
+    valC = fetch_immprocess()
+elif icode ==&#39;6&#39;:
+    rA = IMem[PC+1][0]
+    rB = IMem[PC+1][1]
+    valP = PC + 2
+elif icode==&#39;8&#39; or icode == &#39;7&#39;:
+    valP = PC + 1
+    valC = fetch_immprocess()
+elif icode == &#39;A&#39; or icode ==&#39;B&#39;:
+    rA = IMem[PC+1][0]
+    rB = &#39;f&#39;
+    valP = PC + 2
+elif icode == &#39;0&#39;:
+    Stat == &#39;HLT&#39;
+else:
+    valP = PC + 1
+
+if type(rA)!= int :
+    rA = int(rA,16)
+if  type(rB) != int:
+    rB = int(rB,16)
+return True
+</code></pre>
+<h3 id="译码"><a href="#译码" class="headerlink" title="译码"></a>译码</h3><pre><code>def decode():  ###解码，主要 用来 读寄存器文件以及读
+global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
+    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF ,instruction # 引入所有全局变量
+if instruction==&#39;call&#39;:
+    valB = Register[4]
+elif instruction==&#39;ret&#39;:
+    valA = Register[4]
+    valB = Register[4]
+elif instruction==&#39;pushq&#39;:
+    valA = Register[rA]
+    valB = Register[4]
+elif instruction==&#39;popq&#39;:
+    valA = Register[rA]
+    valB = Register[4]
+elif icode!= 7 and icode !=0 and icode!= 1:
+    if rA  &lt; 15:
+        valA = Register[rA]
+    if rB  &lt; 15:
+        valB = Register[rB]
+if instruction == &#39;halt&#39;:
+    Stat = &#39;HLT&#39;
+return True
+</code></pre>
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><pre><code>def execuate():  ###执行
+globals()
+global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
+    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF,instruction  # 引入所有全局变量
+if icode == &#39;6&#39;:
+    if instruction == &#39;addq&#39;:
+        valE = valA + valB
+    elif instruction == &#39;subq&#39;:
+        valE = valB - valA
+    elif instruction == &#39;andq&#39;:
+        valE = valA &amp; valB
+    elif instruction == &#39;xorq&#39;:
+        valE = valA ^valB
+    ZF = 1 if valE == 0 else 0
+    SF = 1 if valE &lt; 0 else 0
+    OF = ((valA&lt;0) == (valB&lt;0)) &amp; ((valE&lt;0) != (valA&lt;0))
+if instruction == &#39;rrmovq&#39;:
+    valE = valA
+elif instruction == &#39;irmovq&#39;:
+    valE = valC + 0
+elif instruction == &#39;rmmovq&#39;:
+    valE = valB + valC
+elif instruction == &#39;mrmovq&#39;:
+    valE = valB + valC
+elif instruction == &#39;jmp&#39;:
+    Cnd = 1
+elif instruction==&#39;jle&#39;:
+    Cnd = (SF^OF)|ZF
+elif instruction == &#39;je&#39;:
+    Cnd = ZF
+elif instruction == &#39;jl&#39;:
+    Cnd =SF^OF
+elif instruction == &#39;jne&#39;:
+    Cnd = 1-ZF
+elif instruction ==&#39;jge&#39;:
+    Cnd = ~(SF^OF)
+elif instruction == &#39;jg&#39;:
+    Cnd = ~(SF^OF) &amp; ~ZF
+elif instruction == &#39;call&#39;:
+    valE = valB - 8
+elif instruction ==&#39;ret&#39;:
+    valE = valB + 8
+
+return True
+</code></pre>
+<h3 id="访存"><a href="#访存" class="headerlink" title="访存"></a>访存</h3><pre><code>def fetch_mem():####访存阶段,只有写和读的问题，
+                #所以只涉及部分指令pushq ，popq ,call,ret,rmmovq,mrmovq 
+globals()
+global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
+    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF ,instruction # 引入所有全局变量
+if instruction == &#39;rmmovq&#39;:
+    Mem[valE] = valA
+elif instruction ==&#39;mrmovq&#39;:
+    valM = Mem[valE]
+elif instruction == &#39;pushq&#39;:
+    Mem[valE] = valA
+elif instruction == &#39;popq&#39;:
+    valM = Mem[valA]
+elif instruction == &#39;call&#39;:
+    Mem[valE] = valP
+elif instruction ==&#39;ret&#39;:
+    valM = Mem[valE]
+return True
+</code></pre>
+<h3 id="写回"><a href="#写回" class="headerlink" title="写回"></a>写回</h3><pre><code>def write_back(): ###写回阶段，更新各寄存器的值
+globals()
+global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
+    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF ,instruction # 引入所有全局变量
+if icode==&#39;6&#39;:
+    Register[rB] = valE
+if instruction==&#39;rrmovq&#39;:
+    Register[rB] = valE
+elif instruction==&#39;irmovq&#39;:
+    Register[rB] = valE
+elif instruction == &#39;mrmovq&#39;:
+    Register[rA] = valM
+elif instruction == &#39;pushq&#39;:
+    Register[4] = valE
+elif  instruction == &#39;popq&#39;:
+    Register[4] = valE
+    Register[rA] =valM
+elif  instruction ==&#39;call&#39;:
+    Register[4] = valE
+elif instruction==&#39;ret&#39;:
+    Register[4] = valE
+
+return True
+</code></pre>
+<h3 id="PC的更新"><a href="#PC的更新" class="headerlink" title="PC的更新"></a>PC的更新</h3><pre><code>def refresh_PC():  # 更新PC的值，如果没有跳转条件就直接把valP赋给它就好了，如果有的话就把跳转的结果赋给PC
+globals()
+global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
+    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF ,instruction # 引入所有全局变量
+if icode == &#39;7&#39;:
+    if Cnd ==1:
+        PC = valC
+    else:
+        PC = valP
+if instruction==&#39;ret&#39;:
+    PC = valM
+elif instruction == &#39;call&#39;:
+    PC = valC
+elif instruction==&#39;jne&#39; and Cnd == 1:
+    PC = valC
+else:
+    PC = valP
+
+return True
+</code></pre>
+<p>###主体循环<br>    def cycle():<br>    globals()</p>
+<pre><code>global icode, ifun, rB, rA, valE, valC, valA, valB, valP, valM, Register, Opcode_trans, \
+    op_list, PC, IMem, Mem, Stat, dstE, dstM, aluA, aluB, Cnd, CC, ZF, SF, OF ,instruction # 引入所有全局变量
+PC = PC % 1000
+while(True):
+    if Stat == &#39;HLT&#39;:
+        print(&quot;从1加到100的结果为&quot;,end=&quot;&quot;)
+        print(Register[0])
+        break
+    fetch()
+    decode()
+    execuate()
+    fetch_mem()
+    write_back()
+    refresh_PC()
+if __name__ == main:
+    cycle()
+</code></pre>
+<h3 id="最后附上定义的初始变量（带注释的）"><a href="#最后附上定义的初始变量（带注释的）" class="headerlink" title="最后附上定义的初始变量（带注释的）"></a>最后附上定义的初始变量（带注释的）</h3><pre><code>icode = 0
+ifun = 0
+rA =  0
+rB =  0
+valC = 0
+valP = 0
+Register = [0]*15           # ## 十五个寄存器
+Opcode_trans = &#123;            # ## opcode翻译指令
+&quot;0&quot;: [&quot;halt&quot;],
+&quot;1&quot;: [&quot;nop&quot;],
+&quot;2&quot;: [&quot;rrmovq&quot;, &quot;cmovle&quot;, &quot;cmovl&quot;, &quot;cmove&quot;, &quot;cmovne&quot;, &quot;cmovge&quot;, &quot;cmovg&quot;],
+&quot;3&quot;: [&quot;irmovq&quot;],
+&quot;4&quot;: [&quot;rmmovq&quot;],
+&quot;5&quot;: [&quot;mrmovq&quot;],
+&quot;6&quot;: [&quot;addq&quot;, &quot;subq&quot;, &quot;andq&quot;, &quot;xorq&quot;],
+&quot;7&quot;: [&quot;jmp&quot;, &quot;jle&quot;, &quot;jl&quot;, &quot;je&quot;, &quot;jne&quot;, &quot;jg&quot;],
+&quot;8&quot;: [&quot;call&quot;],
+&quot;9&quot;: [&quot;ret&quot;],
+&quot;A&quot;: [&quot;pushq&quot;],
+&quot;B&quot;: [&quot;popq&quot;]
+&#125;
+op_length = &#123;
+&#39;00&#39;: 1,&#39;10&#39;:1,&#39;20&#39;:2,&#39;21&#39;:2,&#39;22&#39;:2,&#39;23&#39;:2,&#39;24&#39;:2,&#39;25&#39;:2,&#39;26&#39;:2,
+&#39;30&#39;:10,&#39;40&#39;:10,&#39;50&#39;:10,
+&#39;71&#39;:9,&#39;80&#39;:9,
+&#39;70&#39;:9,&#39;72&#39;:9,&#39;73&#39;:9,&#39;74&#39;:9,&#39;75&#39;:9,&#39;76&#39;:9,
+&#39;60&#39;:2,&#39;61&#39;:2,&#39;62&#39;:2,&#39;63&#39;:2,
+&#39;90&#39;:1,
+&#39;A0&#39;:2,
+&#39;B0&#39;:2
+&#125;
+
+op_list = op_length.keys()
+PC = 0                 # ## PC地址
+IMem=[&#39;10&#39;]*1000000        # ##指令存储器
+Mem = [0]*1000              # ##数据存储器
+Stat = &quot;AOK&quot;       # ##Y86-64异常状态码（AOK，HLT，ADR，INS）
+valA = 0           # # #寄存器A的值
+valB = 0           # ##寄存器B的值
+valE = 0           # ##ALU运算结果，写回值
+valM = 0            # ##写回值
+dstE = 0            # ##寄存器写回E
+dstM = 0            # ##寄存器写回M
+
+aluA = 0
+aluB = 0
+
+Cnd = 0             ###跳转指令码
+CC = &#39;000&#39;             ###条件码
+ZF = 0
+SF = 0
+OF = 0
+file = &#39;toy3.coe&#39;
+instruction = &#39;&#39;
+##特殊情况   pushq %rsp ; popq % &#123;A040&#125; &#123;B040&#125;
+
+
+##解决方法   先压入栈里，再减8 ； 先弹出值给rsp，再加8；
+</code></pre>
+<hr>
+<p><strong>单周期的实现就这么多了，流水线是一个改进的方向，应该还比较好改进吧，不过也不想做了，就这样吧，以后有时间再改进，初步的改进方式，肯定是给全局变量重新在每一个阶段都分配一个值，然后各个阶段之间加入寄存器，控制冲突和数据冲突也可以解决，但是真正的问题是，一个顺序执行的程序 ，你如何保证 成为一个流水线的并行模式呢，毕竟软件不是硬件，硬件空闲了就可以直接用，你的程序执行到哪里就是哪里，不会同时执行好几个函数，所以最终的问题又回到并发上面了，暂时没学，留待后效</strong></p>
+<!-- flag of hidden posts -->
+    </div>
+
+    
+    
+    
+
+     
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BD%9C%E4%B8%9A/" rel="tag"><i class="fa fa-tag"></i>
+              <a href="/tags/%E6%8C%87%E4%BB%A4%E9%9B%86/" rel="tag"><i class="fa fa-tag"></i>
+          </div>
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81ODI4OC8zNDc1MQ=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%B2%E8%AF%9D"><span class="nav-number">1.</span> <span class="nav-text">闲话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OK%EF%BC%8C%E8%AF%9D%E4%B8%8D%E5%A4%9A%E8%AF%B4%EF%BC%8C%E7%9B%B4%E6%8E%A5%E6%AD%A3%E6%96%87"><span class="nav-number">2.</span> <span class="nav-text">OK，话不多说，直接正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E5%91%A8%E6%9C%9F%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">单周期原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%84%E4%B8%AA%E5%87%BD%E6%95%B0%E7%9A%84%E7%BC%96%E5%86%99"><span class="nav-number">3.</span> <span class="nav-text">各个函数的编写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E6%8C%87"><span class="nav-number">3.1.</span> <span class="nav-text">取指</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%91%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">译码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C"><span class="nav-number">3.3.</span> <span class="nav-text">执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E5%AD%98"><span class="nav-number">3.4.</span> <span class="nav-text">访存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%9B%9E"><span class="nav-number">3.5.</span> <span class="nav-text">写回</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PC%E7%9A%84%E6%9B%B4%E6%96%B0"><span class="nav-number">3.6.</span> <span class="nav-text">PC的更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%90%8E%E9%99%84%E4%B8%8A%E5%AE%9A%E4%B9%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8F%98%E9%87%8F%EF%BC%88%E5%B8%A6%E6%B3%A8%E9%87%8A%E7%9A%84%EF%BC%89"><span class="nav-number">3.7.</span> <span class="nav-text">最后附上定义的初始变量（带注释的）</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="aliang"
+      src="/images/maimai.jpg">
+  <p class="site-author-name" itemprop="name">aliang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/MofishMuziyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;MofishMuziyu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://user.qzone.qq.com/3011109691" title="qq空间 → https:&#x2F;&#x2F;user.qzone.qq.com&#x2F;3011109691" rel="noopener" target="_blank"><i class="fa fa-qq fa-fw"></i>qq空间</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/qing-feng-32-2-86" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;qing-feng-32-2-86" rel="noopener" target="_blank"><i class="gratipay fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://library.nudt.edu.cn/" title="https:&#x2F;&#x2F;library.nudt.edu.cn" rel="noopener" target="_blank">图书馆</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aliang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.1/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
