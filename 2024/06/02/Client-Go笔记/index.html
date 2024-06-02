@@ -21,15 +21,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="Client-go是负责与Kubernetes APIServer服务进行交互的客户资源，利用Client-go与Kubernetes APIServer进行交互访问，以此来对Kubernetes中的各类资源对象进行管理操作，包括内置的资源对象及CRD。Client-Go不仅被Kubernetes项目本身使用，其它围绕着Kubernetes的生态，也被大量的使用，例如：kubectl，ETCD-o">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Client-Go笔记">
 <meta property="og:url" content="http://example.com/2024/06/02/Client-Go%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Muziyu&#39;s Blog">
+<meta property="og:description" content="Client-go是负责与Kubernetes APIServer服务进行交互的客户资源，利用Client-go与Kubernetes APIServer进行交互访问，以此来对Kubernetes中的各类资源对象进行管理操作，包括内置的资源对象及CRD。Client-Go不仅被Kubernetes项目本身使用，其它围绕着Kubernetes的生态，也被大量的使用，例如：kubectl，ETCD-o">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/06/02/Client-Go%E7%AC%94%E8%AE%B0/informer.png">
 <meta property="article:published_time" content="2024-06-02T11:33:59.000Z">
-<meta property="article:modified_time" content="2024-06-02T11:33:59.550Z">
+<meta property="article:modified_time" content="2024-06-02T14:11:27.087Z">
 <meta property="article:author" content="aliang">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/06/02/Client-Go%E7%AC%94%E8%AE%B0/informer.png">
 
 <link rel="canonical" href="http://example.com/2024/06/02/Client-Go%E7%AC%94%E8%AE%B0/">
 
@@ -212,11 +216,13 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2024-06-02 19:33:59" itemprop="dateCreated datePublished" datetime="2024-06-02T19:33:59+08:00">2024-06-02</time>
+              <time title="创建时间：2024-06-02 19:33:59 / 修改时间：22:11:27" itemprop="dateCreated datePublished" datetime="2024-06-02T19:33:59+08:00">2024-06-02</time>
             </span>
 
           
+            <div class="post-description">Client-go是负责与Kubernetes APIServer服务进行交互的客户资源，利用Client-go与Kubernetes APIServer进行交互访问，以此来对Kubernetes中的各类资源对象进行管理操作，包括内置的资源对象及CRD。Client-Go不仅被Kubernetes项目本身使用，其它围绕着Kubernetes的生态，也被大量的使用，例如：kubectl，ETCD-operator等等。</div>
 
         </div>
       </header>
@@ -227,7 +233,82 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h2 id="Client-go简介"><a href="#Client-go简介" class="headerlink" title="Client-go简介"></a>Client-go简介</h2><p>Client-go是负责与Kubernetes APIServer服务进行交互的客户资源，利用Client-go与Kubernetes APIServer进行交互访问，以此来对Kubernetes中的各类资源对象进行管理操作，包括内置的资源对象及CRD。</p>
+<p>Client-Go不仅被Kubernetes项目本身使用，其它围绕着Kubernetes的生态，也被大量的使用，例如：kubectl，ETCD-operator等等。</p>
+<h2 id="Client-go客户端对象"><a href="#Client-go客户端对象" class="headerlink" title="Client-go客户端对象"></a>Client-go客户端对象</h2><p>Client-go共提供了4种与Kubernetes APIServer交互的客户端对象。分别是RESTClient、DiscoverClient、ClientSet、DynamicClient。</p>
+<p>RESTClient：最基础的客户端，主要是对HTTP请求进行了封装，支持Json和Protobuf格式的数据。</p>
+<p>DiscoveryClient：发现客户端。负责发现APIServer支持的资源组、资源版本和资源信息。</p>
+<p>~#: kubectl api-resources</p>
+<p>ClientSet：负责操作Kuernetes内置的资源对象。例如：Pod、Service等。</p>
+<p>DynamicClient：动态客户端，可以对任意的Kubernetes资源进行通用操作，包括CRD。</p>
+<h2 id="RESTClient"><a href="#RESTClient" class="headerlink" title="RESTClient"></a>RESTClient</h2><p>RESTClient是所有客户端的父类，他是最基础的客户端。</p>
+<p>他提供了RESTful对应的方法的封装，如：GET()、Put()、Post()、Delete()等。通过这些封装的方法与Kubernetes APIServer进行交互。</p>
+<p>因为它是所有客户端的父类，所以它可以操作kubernetes内置的所有资源对象以及CRD。</p>
+<h3 id="准备需要："><a href="#准备需要：" class="headerlink" title="准备需要："></a>准备需要：</h3><p>1.k8s的配置文件</p>
+<p>在 ~&#x2F;.kube&#x2F;config文件中</p>
+<p>2.保证你的开发机能通过这个配置文件连接到k8s集群</p>
+<h3 id="书写："><a href="#书写：" class="headerlink" title="书写："></a>书写：</h3><p>1.加载配置文件，生成config对象</p>
+<p>1.加载</p>
+<p>2.配置api路径</p>
+<p>如：config.APIPath &#x3D; “api” &#x2F;&#x2F; pods, &#x2F;api&#x2F;v1&#x2F;pods</p>
+<p>或 config.APIPath &#x3D; “api” &#x2F;&#x2F;developments, &#x2F;apis&#x2F;apps&#x2F;v1&#x2F;namespace&#x2F;{namespace}&#x2F;developments&#x2F;{development}</p>
+<p>3.配置分配版本</p>
+<p>需要pod，核心资源组</p>
+<p>分无名和有名资源组</p>
+<p>4.配置数据的编解码工具</p>
+<p>5.实例化RESTClient对象</p>
+<p>6.定义接受返回值的变量</p>
+<p>7.与APIServer交互</p>
+<p>GET请求方式</p>
+<p>指定命名空间</p>
+<p>指定需要查询的资源，传递资源名称</p>
+<p>参数及参数的序列化工具</p>
+<p>触发请求</p>
+<p>写入返回结果</p>
+<p>GET,定义请求方式，返回了一个Request结构体对象，这个Request结构体对象，就是构建访问APIServer请求用的，依次执行了Namespace，Resource，VersionedParams，构建与APIServer交互的参数。Do方法通过request发起请求，然后通过transformResponse解析请求返回，并绑定到对应资源对象的结构体对象上，同时，request方法先是检查了是否有可用的Client，在这里开始使用net&#x2F;http包的功能。</p>
+<h2 id="ClientSet"><a href="#ClientSet" class="headerlink" title="ClientSet"></a>ClientSet</h2><p>相对上面更加优雅</p>
+<p>ClientSet是基于RESTClient的封装，同时ClientSet是使用预生成的API对象与APIServer进行交互的，这样做更方便我们进行二次开发。</p>
+<p>ClientSet是一组资源对象对客户端的集合，例如负责操作Pods、Service等资源的CoreV1Client等。通过这些资源对象客户端提供的操作方法，即可对Kubernetes内置的资源对象进行Create、Update、Get、List、Delete等操作。</p>
+<h3 id="书写"><a href="#书写" class="headerlink" title="书写"></a>书写</h3><p>1.加载配置文件</p>
+<p>2.实例化（相对之前省去很多过程）</p>
+<p>ClientSet与API交互过程</p>
+<p>返回CoreV1Client实例</p>
+<p>指定查询的资源以及指定资源的namespace，namespace如果为空，则表示查询所有的namespace</p>
+<p>查询pod列表</p>
+<p>CoreV1返回了CoreV1Client实例对象</p>
+<p>Pods调用了newPods函数，该函数返回的是PodInterface对象，PodInterface对象实现了Pods资源相关的全部方案，同时在newPods里面还将RESTclient实例对象赋值给了对应的Client属性。</p>
+<p>List内使用RestClient与K8S APIServer进行了交互。</p>
+<h2 id="DynamicClient（动态客户端）"><a href="#DynamicClient（动态客户端）" class="headerlink" title="DynamicClient（动态客户端）"></a>DynamicClient（动态客户端）</h2><p>DynamicClient是一种动态客户端，通过动态指定资源组、资源版本和资源等信息，来操作任意的Kubernetes资源对象的一种客户端，即不仅仅通过操作Kubernetes内置的资源对象还可以操作CRD这这也是与ClientSet最明显的一个区别。</p>
+<p>使用ClientSet的时候，程序会将所用的版本与类型紧密耦合，而DynamicClient使用嵌套的map(string)interface{}结构存储Kubernetes APIServer的返回值，使用反射机制，在运行的时候，进行数据绑定，这种方式更加灵活，但是却无法获取强数据类型的检查和验证。</p>
+<p>补充：</p>
+<p>1.Object.runtime接口和Unstructed结构体。</p>
+<p>Object.runtime：kubernetes中的所有资源对象，都实现了这个接口·，其中包含DeepCopyObject和GetObjectKind的方法，分别用于对象深拷贝和获取对象的具体资源类型。</p>
+<p>Unstructed：包含map(string)interface{}类型字段，在处理无法预知结构的数据时，将数据值存入interface{}中，待运行时利用反射判断。该结构体提供了大量的工具方法，便于处理非结构化的数据。</p>
+<h3 id="书写：-1"><a href="#书写：-1" class="headerlink" title="书写："></a>书写：</h3><p>1.加载配置文件生成config对象</p>
+<p>2.实例化客户端对象，这里是实例化动态客户端对象</p>
+<p>3.配置我们需要用的GVR</p>
+<p>4.发送请求，且得到返回结果</p>
+<p>三种客户端对象都是针对资源对象管理的。而DiscoverClient则是针对GVR的，用于查看当前Kubertnetes集群支持哪些资源组、资源版本、资源信息。</p>
+<h2 id="将GVR数据缓存到本地"><a href="#将GVR数据缓存到本地" class="headerlink" title="将GVR数据缓存到本地"></a>将GVR数据缓存到本地</h2><p>GVR数据其实是很少·1变动的，因此我们可以将GVR数据缓存在本地，减少Client与APIServer交互，减少网络损耗。</p>
+<p>在discoverery&#x2F;cached中，有另外两个客户端是来实现将GVR数据缓存到本地文件和内存中的，分别是CachedDiscoveryClient和memCacheClient。</p>
+<p>其实，我们平时管理的k8s的集群的kubectl命令也是使用这样的方式来使用我们的GVR与APIServer交互的。它的缓存文件默认是在~&#x2F;.kube&#x2F;cache中的。</p>
+<h2 id="Informer"><a href="#Informer" class="headerlink" title="Informer"></a>Informer</h2><p>Informer负责与Kubernetes APIServer进行Watch操作，Watch的资源，可以是Kubernetes内置资源对象，也可以是CRD。</p>
+<p>Informer是一个带有本地缓存以及索引机制的核心工具包，当请求数据为查询操作时，会优先从本地缓存去查找数据，而创新、更新、删除，这类的操作则会根据事件通知写到deltaFIFO中，同时对对应的事件处理过后，更新本地缓存，使本地缓存与ETCD的数据保持一致。</p>
+<p>Informer抽象出来的这个缓存器，将查询相关操作的压力接收下来，这样就不必每次都调用APIServer的接口，减轻了APIServer的数据交互压力。</p>
+<p><img src="/2024/06/02/Client-Go%E7%AC%94%E8%AE%B0/informer.png"></p>
+<h3 id="书写：-2"><a href="#书写：-2" class="headerlink" title="书写："></a>书写：</h3><p>1.加载配置文件，生成config对象</p>
+<p>2.实例化Informer对象</p>
+<p>3.定义接受返回值的变量</p>
+<p>4.与APIServer交互</p>
+<p>5.写入返回结果</p>
+<h3 id="监听资源对象"><a href="#监听资源对象" class="headerlink" title="监听资源对象"></a>监听资源对象</h3><p>1.定义接受返回值的变量</p>
+<p>2.与APIServer交互</p>
+<p>3.写入返回结果</p>
+<h2 id="书写控制器"><a href="#书写控制器" class="headerlink" title="书写控制器"></a>书写控制器</h2><p>replicaset controller</p>
+<p>例子ReplivaSet控制器负责保证有desire number of pods来match所规定的selector</p>
+<p>如果match selector的pod少于所预期，则增加pod</p>
+<p>反之，减少pod</p>
+
     </div>
 
     
@@ -244,13 +325,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2024/06/02/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="prev" title="环境搭建">
-      <i class="fa fa-chevron-left"></i> 环境搭建
+    <a href="/2024/06/02/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="prev" title="实验环境搭建">
+      <i class="fa fa-chevron-left"></i> 实验环境搭建
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2024/06/02/%E9%9B%86%E7%BE%A4%E7%9B%91%E6%8E%A7%E5%B7%A5%E5%85%B7%E5%8E%9F%E7%90%86%E4%B8%8E%E4%BD%BF%E7%94%A8/" rel="next" title="集群监控工具原理与使用">
-      集群监控工具原理与使用 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -314,6 +392,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-go%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Client-go简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-go%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.</span> <span class="nav-text">Client-go客户端对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RESTClient"><span class="nav-number">3.</span> <span class="nav-text">RESTClient</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E9%9C%80%E8%A6%81%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">准备需要：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%A6%E5%86%99%EF%BC%9A"><span class="nav-number">3.2.</span> <span class="nav-text">书写：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ClientSet"><span class="nav-number">4.</span> <span class="nav-text">ClientSet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%A6%E5%86%99"><span class="nav-number">4.1.</span> <span class="nav-text">书写</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DynamicClient%EF%BC%88%E5%8A%A8%E6%80%81%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">DynamicClient（动态客户端）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%A6%E5%86%99%EF%BC%9A-1"><span class="nav-number">5.1.</span> <span class="nav-text">书写：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86GVR%E6%95%B0%E6%8D%AE%E7%BC%93%E5%AD%98%E5%88%B0%E6%9C%AC%E5%9C%B0"><span class="nav-number">6.</span> <span class="nav-text">将GVR数据缓存到本地</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Informer"><span class="nav-number">7.</span> <span class="nav-text">Informer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%A6%E5%86%99%EF%BC%9A-2"><span class="nav-number">7.1.</span> <span class="nav-text">书写：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%91%E5%90%AC%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1"><span class="nav-number">7.2.</span> <span class="nav-text">监听资源对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%A6%E5%86%99%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">8.</span> <span class="nav-text">书写控制器</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -329,14 +408,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
