@@ -63,9 +63,15 @@
       <guid>http://example.com/2024/06/02/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E8%BD%AF%E4%BB%B6/</guid>
       <pubDate>Sun, 02 Jun 2024 11:32:00 GMT</pubDate>
       
+      <description>主要介绍了云原生容器管理关键架构，Kubeedge,Openyurt以及Superedge</description>
       
       
       
+      <content:encoded><![CDATA[<h1 id="云原生容器管理软件"><a href="#云原生容器管理软件" class="headerlink" title="云原生容器管理软件"></a>云原生容器管理软件</h1><p>云原生需要容器，和容器化的应用程序，容器管理器。而现在市场中最广泛应用的容器管理器为：Kubeedge、Openyurt、Superedge。本文介绍三者的主要架构。</p><hr><h2 id="Kubeedge架构"><a href="#Kubeedge架构" class="headerlink" title="Kubeedge架构"></a>Kubeedge架构</h2><p>KubeEdge是一个开源系统，用于将容器化应用程序编排功能扩展到Edge的主机（将本机容器化的业务流程和设备管理扩展到Edge上的主机，也就是本地流程拓展到云主机）。</p><p>KubeEdge基于Kubernetes构建，并为网络、应用程序部署以及云与边缘之间的元数据同步提供核心基础架构支持。它还支持MQTT，并允许开发人员编写自定义逻辑并在Edge上启用资源受限的设备通信。KubeEdge由云部分和边缘部分组成，边缘和云部分现已开源。</p><p><img src="/2024/06/02/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E8%BD%AF%E4%BB%B6/kubeedge.png" alt="Kubeedge架构"><br>如图所示，该架构主要分为云、边、端三个部分，云上时KubeEdge的控制面，边就是KubeEdge的边缘节点，端就是跑了一些端侧设备。</p><p>下面按图介绍一下各个部分的组成：</p><h3 id="云端："><a href="#云端：" class="headerlink" title="云端："></a>云端：</h3><p>黄色方框三个Module，运行在CloudCore进程中。</p><p>1.CloudHub作为云到边的网络信道。</p><p>2.EdgeController负责管理边缘节点和pod（k8s管理的最小单位级）的metadata（元数据）。</p><p>3.DeviceController负责管理设备的metadata和status信息。</p><h3 id="边缘侧："><a href="#边缘侧：" class="headerlink" title="边缘侧："></a>边缘侧：</h3><p><strong>Edged：</strong></p><p>Edged可以看做是一个简化版的<a href="https://zhuanlan.zhihu.com/p/338462784">kubelet</a>（Kubelet 是 kubernetes 工作节点上的一个代理组件，运行在每个节点上。Kubelet是工作节点上的主要服务，定期从kube-apiserver组件接收新的或修改的Pod规范，并确保Pod及其容器在期望规范下运行。同时该组件作为工作节点的监控组件，向kube-apiserver汇报主机的运行状况。这里Edged类似的管理pod），负责pod生命周期的管理，并实现了和CRI，Volume，ConfigMap，Secret等功能的对接。</p><p><strong>EdgeHub：</strong></p><p>和CloudHub打交道，支持的协议有websocket和QUIC（QUIC由于其在握手方面做了大量优化，以及在断线重连上的优势，非常适合用于边云之间的通信），EdgeHub的主要功能有：</p><ul><li>Keep Alive</li><li>Publish Client Info</li><li>Route to Cloud</li><li>Route to Edge</li></ul><p><a href="https://www.cnblogs.com/yrxing/p/14607878.html?spm=wolai.workspace.0.0.745664a8tAPpON">kubeedge云边协同</a><br><a href="https://zhuanlan.zhihu.com/p/350335104?spm=wolai.workspace.0.0.280364a8YUO7TJ">kubeedge整体介绍</a><br><a href="https://blog.csdn.net/weixin_43401958/article/details/123203566?spm=wolai.workspace.0.0.280364a8YUO7TJ">kubeedge架构介绍</a></p><hr><h2 id="Openyurt整体架构"><a href="#Openyurt整体架构" class="headerlink" title="Openyurt整体架构"></a>Openyurt整体架构</h2><p>OpenYurt也是基于原生Kubernetes构建的框架。</p><blockquote><p>Kubernetes，简称 k8s或者 “kube”，是一个开源的 Linux 容器自动化运维平台，它消除了容器化应用程序在部署、伸缩时涉及到的许多手动操作。换句话说，你可以将多台主机组合成集群来运行 Linux 容器，而 Kubernetes 可以帮助你简单高效地管理那些集群。构成这些集群的主机还可以跨越公有云、私有云以及混合云。Kubernetes 最开始是由 Google 的工程师设计开发的。Google 作为 Linux 容器技术的早期贡献者之一，曾公开演讲介绍 Google 如何将一切都运行于容器之中（这是 Google 的云服务背后的技术）。Google 一周内的容器部署超过 20 亿次，全部的工作都由内部平台 Borg 支撑。Borg 是 Kubernetes 的前身，几年来开发 Borg 的经验教训也成了影响 Kubernetes 中许多技术的主要因素。</p></blockquote><p><img src="/2024/06/02/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E8%BD%AF%E4%BB%B6/openyurt.png" alt="openyurt架构"></p><p>其中蓝色框为原生Kubernetes组件，橙色框中组件为OpenYurt组件。</p><h3 id="节点分类"><a href="#节点分类" class="headerlink" title="节点分类"></a>节点分类</h3><ul><li>Cloud Node：通过内网与Kubernetes Master连接，主要用于部署运行中心控制组件。节点Label: <a href="http://openyurt.io/is-edge-worker:">openyurt.io&#x2F;is-edge-worker:</a> false</li><li>Edge Node：通过公网与Kubernetes Master连接，一般和边缘生产环境距离较近，主要用于部署运行边缘业务容器。节点Label: <a href="http://openyurt.io/is-edge-worker:">openyurt.io&#x2F;is-edge-worker:</a> true</li></ul><h3 id="边缘访问云端Kube-apiserver的管控流量"><a href="#边缘访问云端Kube-apiserver的管控流量" class="headerlink" title="边缘访问云端Kube-apiserver的管控流量"></a>边缘访问云端Kube-apiserver的管控流量</h3><p>Edge Node上的Kubelet, kube-proxy, Flannel以及其他云原生组件访问云端kube-apiserver的流量都会经过YurtHub组件，同时YurtHub组件会在本机磁盘上缓存云端返回的数据，当云边网络异常时YurtHub将使用本地缓存数据来恢复边缘业务。</p><h3 id="云边数据面流量"><a href="#云边数据面流量" class="headerlink" title="云边数据面流量"></a>云边数据面流量</h3><p>由于边缘侧节点的网络区域与云上网络域不在一个网络平面内，并且边缘节点一般不暴漏在公网上，为了实现云与边、边与边的网络通信，Raven组件通过构建VPN的方式打通云边主机网络与容器网络，这些云边的数据面流量将从通过Raven Agent实现互访互通。</p><h3 id="OpenYurt组件介绍"><a href="#OpenYurt组件介绍" class="headerlink" title="OpenYurt组件介绍"></a>OpenYurt组件介绍</h3><ul><li><strong>YurtHub:</strong><ul><li>节点维度的SideCar，节点上组件和kube-apiserver之间的流量代理，有边缘(edge)和云端(cloud)两种运行模式。其中边缘YurtHub会缓存云端返回的数据。</li><li>部署形态：以Static Pod形态运行在每个节点上。</li></ul></li><li><strong>Raven:</strong><ul><li>构建云边VPN访问通道，实现云边、边边网络互通，其中RavenControllerManager组件协调Gateway节点,以及RavenAgent组件负责构建VPN以及路由管理。</li><li>部署形态：RavenControllerManager以Deployment形态部署在Cloud Node或Master Node上，Raven Agent以DaemonSet部署在所有节点上。</li></ul></li><li><strong>YurtControllerManager：</strong><ul><li>中心的控制器，目前包括NodeLifeCycle Controller(不驱逐自治节点上的Pod)，YurtCSRController(用于Approve边缘的证书申请)</li><li>部署形态：Deployment形态部署在Cloud Node上。</li></ul></li><li><strong>YurtAppManager:</strong><ul><li>跨地域的资源及业务负载管理器，目前包括NodePool(节点池管理)，YurtAppSet(之前名为UnitedDeployment)(节点池维度的业务负载管理)，YurtAppDaemon(节点池维度的Daemonset), YurtIngress(节点池维度的Ingress Controller管理器)</li><li>部署形态： Deployment形态部署在Cloud Node上。</li></ul></li><li><strong>YurtDeviceController&#x2F;YurtEdgeXManager:</strong><ul><li>用于边缘IOT解决方案的非侵入融合，通过云原生模式管控边缘设备。目前EdgeX Foundry已经无缝集成到OpenYurt架构中。</li><li>YurtEdgeXManager以Deployment形态部署在Cloud Node上，YurtDeviceController以YurtAppSet(之前名为UnitedDeployment)形态部署在Edge Node上，每个NodePool上部署一套YurtDeviceController。</li></ul></li><li><strong>Pool-Coordinator:</strong><ul><li>在节点池内提供KV数据存储(仅存储在内存中)和分布式锁等能力，供YurtHub选举产生Leader，从而实现心跳代理，云边流量复用，节点池内运维监控等能力。</li><li>以YurtAppDaemon形态部署，会确保每个边缘节点池中有一个实例。</li></ul></li></ul><p><img src="/2024/06/02/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E8%BD%AF%E4%BB%B6/%E8%BE%B9%E7%BC%98%E8%8A%82%E7%82%B9.png" alt="边缘节点"></p><ul><li>Master节点位于云端，作为OpenYurt集群的管控节点，同时也作为集群的Cloud Node，上面部署了原生k8s的控制面组件controlplane，以及OpenYurt的管控组件Yurt-Controller-Manager、Yurt-App-manager、Tunnel-Server</li><li>Cloud-Node节点位于云端，作为OpenYurt集群的Cloud Node，可以用于部署OpenYurt的管控组件，本文实验中只用于演示了云端节点接入操作，没有实际部署OpenYurt的管控组件。</li><li>Edge-Node位与边缘，作为集群的边缘节点，部署了节点自治组件YurtHub，以及云端通道组件tunnel-agent。</li></ul><p><a href="https://openyurt.io/zh/">openyurt官网</a></p><p><a href="https://openyurt.io/zh/docs/core-concepts/architecture">系统架构 | OpenYurt</a></p><p><a href="https://developer.aliyun.com/article/813934#:~:text=OpenYurt,%E7%AE%A1%E7%90%86%E7%AD%89%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD%E3%80%82">openyurt入门实操</a></p><hr><h2 id="Superedge整体架构"><a href="#Superedge整体架构" class="headerlink" title="Superedge整体架构"></a>Superedge整体架构</h2><p><img src="/2024/06/02/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E8%BD%AF%E4%BB%B6/superedge.png" alt="Superedge架构"></p><h3 id="关键技术"><a href="#关键技术" class="headerlink" title="关键技术"></a>关键技术</h3><ul><li><strong>tunnel隧道技术</strong></li></ul><p>tunnel cloud与tunnel edge使得边缘与中心互通，即使边缘节点没有公网IP也能建立边缘和云端的连接。</p><ul><li><strong>边缘自治</strong></li></ul><p>就算引入隧道技术，边缘节点和云端的网络也不能时刻保持稳定，甚至会断连，自治使得断网或者边缘节点重启时，节点上的服务不受影响或能够恢复。</p><p>Life-Apiserver代理节点上所有组件和业务容器访问云端Kube-Apiserver的请求，并对请求结果做高速缓存。在断连时，利用缓存提供服务，实现边缘自治。</p><ul><li><strong>边缘分布式健康检查</strong></li></ul><p>边缘节点的异常由Edge-Health模块完成，每一个边缘节点有各自的Edge-Health，在一定的区域内，边缘节点能够互相访问，其中EH模块的互相访问可以确定彼此的安全性，最终一个节点的安全与否由所有访问的模块“投票”表决。若一个节点产生异常，异常结果会反馈给云端的Edge-Health-Admission，由云端根据投票结果和Apiserver选择将服务驱逐某边缘节点。</p>]]></content:encoded>
+      
+      
+      
+      <category domain="http://example.com/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/">-云原生</category>
       
       
       <comments>http://example.com/2024/06/02/%E4%BA%91%E5%8E%9F%E7%94%9F%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86%E8%BD%AF%E4%BB%B6/#disqus_thread</comments>
@@ -90,29 +96,6 @@
       
       
       <comments>http://example.com/2024/06/02/%E4%BA%91%E5%8E%9F%E7%94%9F%E8%BE%B9%E7%BC%98%E6%8A%80%E6%9C%AF/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>Kubeedge</title>
-      <link>http://example.com/2024/06/01/Kubeedge/</link>
-      <guid>http://example.com/2024/06/01/Kubeedge/</guid>
-      <pubDate>Sat, 01 Jun 2024 02:29:21 GMT</pubDate>
-      
-        
-        
-      <description>&lt;p&gt;Kubeedges是一种云平台&lt;/p&gt;
-</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<p>Kubeedges是一种云平台</p>]]></content:encoded>
-      
-      
-      
-      
-      <comments>http://example.com/2024/06/01/Kubeedge/#disqus_thread</comments>
       
     </item>
     
