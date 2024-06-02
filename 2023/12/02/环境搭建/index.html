@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/%E6%A0%91%E5%8F%B6_sleaves.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/%E6%A0%91%E5%8F%B6_sleaves.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.1/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="经过调研，我们对现有的云边通信框架有了充分的认识与了解，但是尚停留在理论阶段，没有进行过实际测试。因此，我们在小组成员个人笔记本中分别搭建了Kubeedge、Openyurt以及SuperEdge的测试环境，部署了一个主节点和三个边缘节点用以进行测试。以下是实验搭建步骤。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实验环境搭建">
+<meta property="og:url" content="http://example.com/2023/12/02/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Muziyu&#39;s Blog">
+<meta property="og:description" content="经过调研，我们对现有的云边通信框架有了充分的认识与了解，但是尚停留在理论阶段，没有进行过实际测试。因此，我们在小组成员个人笔记本中分别搭建了Kubeedge、Openyurt以及SuperEdge的测试环境，部署了一个主节点和三个边缘节点用以进行测试。以下是实验搭建步骤。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-02T11:32:12.000Z">
+<meta property="article:modified_time" content="2024-06-02T14:30:24.366Z">
+<meta property="article:author" content="aliang">
+<meta property="article:tag" content="-环境搭建">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/12/02/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>实验环境搭建 | Muziyu's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/rss2.xml" title="Muziyu's Blog" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Muziyu's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="fa fa-file fa-fw"></i>资源</a>
+
+  </li>
+        <li class="menu-item menu-item-code">
+
+    <a href="/code/" rel="section"><i class="fa fa-code fa-fw"></i>代码</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+        <li class="menu-item menu-item-notes">
+
+    <a href="/notes/" rel="section"><i class="fa fa-notes fa-fw"></i>notes</a>
+
+  </li>
+        <li class="menu-item menu-item-留言板">
+
+    <a href="/guestbook/" rel="section"><i class="newpaper-o fa-fw"></i>留言板</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/12/02/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/maimai.jpg">
+      <meta itemprop="name" content="aliang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Muziyu's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          实验环境搭建
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-12-02 19:32:12" itemprop="dateCreated datePublished" datetime="2023-12-02T19:32:12+08:00">2023-12-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-02 22:30:24" itemprop="dateModified" datetime="2024-06-02T22:30:24+08:00">2024-06-02</time>
+              </span>
+
+          
+            <div class="post-description">经过调研，我们对现有的云边通信框架有了充分的认识与了解，但是尚停留在理论阶段，没有进行过实际测试。因此，我们在小组成员个人笔记本中分别搭建了Kubeedge、Openyurt以及SuperEdge的测试环境，部署了一个主节点和三个边缘节点用以进行测试。以下是实验搭建步骤。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="KubeEdge搭建"><a href="#KubeEdge搭建" class="headerlink" title="KubeEdge搭建"></a>KubeEdge搭建</h1><h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>使用mininet搭建模拟网络环境</p>
+<p>虚拟机硬件配置</p>
+<table>
+<thead>
+<tr>
+<th>型号</th>
+<th>硬盘</th>
+<th>内存</th>
+<th>CPU</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>vritualbox虚拟机</td>
+<td>60G</td>
+<td>2G</td>
+<td>Intel i5-11320H 2核 3.2GHz</td>
+</tr>
+<tr>
+<td>vritualbox虚拟机</td>
+<td>60G</td>
+<td>2G</td>
+<td>Intel i5-11320H 2核 3.2GHz</td>
+</tr>
+<tr>
+<td>vritualbox虚拟机</td>
+<td>60G</td>
+<td>2G</td>
+<td>Intel i5-11320H 2核 3.2GHz</td>
+</tr>
+<tr>
+<td>vritualbox虚拟机</td>
+<td>60G</td>
+<td>2G</td>
+<td>Intel i5-11320H 2核 3.2GHz</td>
+</tr>
+</tbody></table>
+<p>软件配置，由于兼容性问题，使用kubernetes1.23，KubeEdge1.12.2</p>
+<table>
+<thead>
+<tr>
+<th>主机名</th>
+<th>IP</th>
+<th>操作系统</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>master</td>
+<td>10.0.1.200（192.168.80.134）</td>
+<td>Ubuntu20.04</td>
+</tr>
+<tr>
+<td>node1</td>
+<td>192.168.0.201（192.168.80.135）</td>
+<td>Ubuntu20.04</td>
+</tr>
+<tr>
+<td>node2</td>
+<td>192.168.0.202（192.168.80.136）</td>
+<td>Ubuntu20.04</td>
+</tr>
+<tr>
+<td>node3</td>
+<td>192.168.0.203</td>
+<td>Ubuntu20.04</td>
+</tr>
+</tbody></table>
+<h2 id="初始化系统配置"><a href="#初始化系统配置" class="headerlink" title="初始化系统配置"></a>初始化系统配置</h2><p>所有主机修改主机名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo hostnamectl set-hostname master</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<p>所有主机关闭防火墙</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop ufw</span><br><span class="line">sudo systemctl <span class="built_in">disable</span> ufw</span><br></pre></td></tr></table></figure>
+
+<p>所有主机禁用swap</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/fstab</span><br><span class="line"><span class="comment"># 注释swap那一行</span></span><br><span class="line">sudo swapon -a <span class="comment"># 启用所有swap</span></span><br><span class="line">sudo swapoff -a <span class="comment"># 禁用所有swap</span></span><br><span class="line">sudo swapon -s <span class="comment"># 查看swap状态</span></span><br></pre></td></tr></table></figure>
+
+<p>所有主机设置时间同步</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install -y ntpdate</span><br><span class="line">sudo ntpdate time.windows.com</span><br><span class="line">sudo timedatectl set-timezone Asia/Shanghai</span><br></pre></td></tr></table></figure>
+
+<p>所有节点添加hosts</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加hosts</span></span><br><span class="line">sudo vi /etc/hosts</span><br><span class="line"><span class="comment"># 加入如下几行</span></span><br><span class="line">10.0.1.200     master</span><br><span class="line">192.168.0.201    node1</span><br><span class="line">192.168.0.202    node2</span><br><span class="line">192.168.0.203    node3</span><br><span class="line">185.199.108.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
+
+<p>启用ipv4转发</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/sysctl.conf</span><br><span class="line"><span class="comment"># 注释下面行</span></span><br><span class="line">/etc/sysctl.conf: net.ipv4.ip_forward = 1</span><br><span class="line">sudo sysctl -p /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><p>我们选择安装docker.io ubuntu的版本，省事</p>
+<p><strong>记住，需要在所有4台节点上都安装docker</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install docker.io</span><br></pre></td></tr></table></figure>
+
+<p>docker官方镜像仓库访问比较慢，可以使用dockerhub国内源加速</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">mkdir</span> -p /etc/docker</span><br><span class="line">sudo <span class="built_in">tee</span> /etc/docker/daemon.json &lt;&lt;-<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;registry-mirrors&quot;</span>: [<span class="string">&quot;https://knjsrl1b.mirror.aliyuncs.com&quot;</span>,<span class="string">&quot;https://docker.hub.com&quot;</span>]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"><span class="comment"># 阿里云镜像加速 https://knjsrl1b.mirror.aliyuncs.com</span></span><br><span class="line"><span class="comment"># 中科大镜像加速 https://docker.mirrors.ustc.edu.cn</span></span><br><span class="line"><span class="comment"># 云节点加入&quot;exec-opts&quot;: [&quot;native.cgroupdriver=systemd&quot;],</span></span><br><span class="line"><span class="comment"># 边缘节点默认cgroupfs就行了，和kubeedge一致</span></span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<h2 id="主机安装Kubernetes"><a href="#主机安装Kubernetes" class="headerlink" title="主机安装Kubernetes"></a>主机安装Kubernetes</h2><p>考虑到兼容性，我们选择kubernetes1.23.17进行安装</p>
+<p>根据阿里云的<a target="_blank" rel="noopener" href="https://developer.aliyun.com/mirror/kubernetes">教程</a>，在<strong>1台云主机上</strong>，使用阿里源安装kubelet，kubeadm和kubectl组件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update &amp;&amp; apt-get install -y apt-transport-https</span><br><span class="line">sudo curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | sudo apt-key add -</span><br><span class="line">sudo vim /etc/apt/sources.list.d/kubernetes.list</span><br><span class="line"><span class="comment"># 输入以下内容：</span></span><br><span class="line">deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main</span><br><span class="line">sudo apt update</span><br><span class="line"><span class="comment"># 可先使用apt list kubelet -a 查看所有版本，再指定版本</span></span><br><span class="line">sudo apt install -y kubelet=1.23.17-00 kubeadm=1.23.17-00 kubectl=1.23.17-00</span><br></pre></td></tr></table></figure>
+
+<p>在云master主机上使用kubeadm创建kubernetes集群，这里我们使用阿里云的镜像进行加速，这里kubeadm会安装和自己版本匹配的kubernetes</p>
+<p>如果主机的IP就是公网IP，那么初始化如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo kubeadm init \</span><br><span class="line">  --apiserver-advertise-address=192.168.132.100 \</span><br><span class="line">  --image-repository registry.aliyuncs.com/google_containers \</span><br><span class="line">  --service-cidr=10.96.0.0/12 \</span><br><span class="line">  --pod-network-cidr=10.244.0.0/16</span><br></pre></td></tr></table></figure>
+
+<p>如果云的服务器的公网IP在主机上看不到，因此这里选择让apiserver监听所有网卡的地址，并且添加额外的公网IP作为认证许可的IP</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo kubeadm init \</span><br><span class="line">  --apiserver-advertise-address=0.0.0.0 \</span><br><span class="line">  --apiserver-cert-extra-sans=139.9.72.62 \</span><br><span class="line">  --image-repository registry.aliyuncs.com/google_containers \</span><br><span class="line">  --service-cidr=10.96.0.0/12 \</span><br><span class="line">  --pod-network-cidr=10.244.0.0/16</span><br></pre></td></tr></table></figure>
+
+<p>执行完毕会输出很多提示指令需要我们执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Your Kubernetes control-plane has initialized successfully!</span><br><span class="line"></span><br><span class="line">To start using your cluster, you need to run the following as a regular user:</span><br><span class="line"></span><br><span class="line">  <span class="built_in">mkdir</span> -p <span class="variable">$HOME</span>/.kube</span><br><span class="line">  sudo <span class="built_in">cp</span> -i /etc/kubernetes/admin.conf <span class="variable">$HOME</span>/.kube/config</span><br><span class="line">  sudo <span class="built_in">chown</span> $(<span class="built_in">id</span> -u):$(<span class="built_in">id</span> -g) <span class="variable">$HOME</span>/.kube/config</span><br><span class="line"></span><br><span class="line">Alternatively, <span class="keyword">if</span> you are the root user, you can run:</span><br><span class="line"></span><br><span class="line">  <span class="built_in">export</span> KUBECONFIG=/etc/kubernetes/admin.conf</span><br><span class="line"></span><br><span class="line">You should now deploy a pod network to the cluster.</span><br><span class="line">Run <span class="string">&quot;kubectl apply -f [podnetwork].yaml&quot;</span> with one of the options listed at:</span><br><span class="line">  https://kubernetes.io/docs/concepts/cluster-administration/addons/</span><br><span class="line"></span><br><span class="line">Then you can <span class="built_in">join</span> any number of worker nodes by running the following on each as root:</span><br><span class="line"></span><br><span class="line">kubeadm <span class="built_in">join</span> 192.168.132.100:6443 --token 20vasa.tus6j1y6edbm6e1i \</span><br><span class="line">        --discovery-token-ca-cert-hash sha256:830a4e14fdecfb8c9eb7143fe44a1abb8bc68956d959b55447b2e7a1d6e61d85</span><br></pre></td></tr></table></figure>
+
+<p>我们按照提示在普通用户和root用户下都执行一次，这样kubectl就可以访问到本地的kube-api-server了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p <span class="variable">$HOME</span>/.kube</span><br><span class="line">  sudo <span class="built_in">cp</span> -i /etc/kubernetes/admin.conf <span class="variable">$HOME</span>/.kube/config</span><br><span class="line">  sudo <span class="built_in">chown</span> $(<span class="built_in">id</span> -u):$(<span class="built_in">id</span> -g) <span class="variable">$HOME</span>/.kube/config</span><br></pre></td></tr></table></figure>
+
+<p>我们接着安装CNI网络插件，下载太慢了可以使用这个<a target="_blank" rel="noopener" href="https://ipaddress.com/website/raw.githubusercontent.com">网站</a>查询raw.githubusercontent.com的IP地址并且写入hosts文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</span><br><span class="line">vi kube-flannel.yml</span><br><span class="line"><span class="comment"># kubectl edit -n kube-flannel daemonset.apps/kube-flannel-ds</span></span><br><span class="line">......<span class="comment"># 修改下面的affinity亲和性，增加一个key使其不部署于边缘节点</span></span><br><span class="line">- key: node-role.kubernetes.io/edge</span><br><span class="line">                  operator: DoesNotExist</span><br><span class="line">......</span><br><span class="line">kubectl apply -f kube-flannel.yml</span><br></pre></td></tr></table></figure>
+
+<p>执行 <code>kubectl get pods -n kube-flannel</code>如果出现如下说明网络插件安装成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">kube-flannel-ds-hgn9l            1/1     Running   0          44m</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>让master也作为工作节点可以运行用户Pod</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl taint node master node-role.kubernetes.io/master-</span><br></pre></td></tr></table></figure>
+
+<p>让master不参与运行用户Pod</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl taint node master node-role.kubernetes.io/master=:NoSchedule</span><br></pre></td></tr></table></figure>
+
+<p>过一会，在master主机上执行 <code>kubectl get nodes</code>，如下则加入成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodekub</span><br><span class="line">NAME     STATUS   ROLES                  AGE   VERSION</span><br><span class="line">master   Ready    control-plane,master   13m   v1.22.15</span><br></pre></td></tr></table></figure>
+
+<p>在 Kubernetes 集群中创建一个 pod，验证是否正常运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">kubectl create deployment nginx --image=nginx</span><br><span class="line">kubectl expose deployment nginx --port=80 --<span class="built_in">type</span>=NodePort</span><br><span class="line">kubectl get pod,svc</span><br><span class="line">NAME                         READY   STATUS    RESTARTS   AGE</span><br><span class="line">pod/nginx-6799fc88d8-hf2m9   1/1     Running   0          22s</span><br><span class="line"></span><br><span class="line">NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE</span><br><span class="line">service/kubernetes   ClusterIP   10.96.0.1       &lt;none&gt;        443/TCP        14m</span><br><span class="line">service/nginx        NodePort    10.104.74.138   &lt;none&gt;        80:31332/TCP   8s</span><br></pre></td></tr></table></figure>
+
+<p>可以看到nginx暴露的端口号为31332，因此我们访问地址：<a href="http://39.106.4.225:31332可以成功访问nginx首页">http://39.106.4.225:31332可以成功访问nginx首页</a></p>
+<p><a target="_blank" rel="noopener" href="http://192.168.80.128:31017/">http://192.168.80.128:31017</a></p>
+<h2 id="安装KubeEdge"><a href="#安装KubeEdge" class="headerlink" title="安装KubeEdge"></a>安装KubeEdge</h2><p>kubeEdge和kubernetes类似，提供了keadm工具用来快速搭建kubeedge集群，我们可以提前在KubeEdge的github官网上面下载keadm1.12.2</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/kubeedge/kubeedge/releases/download/v1.13.1/keadm-v1.13.1-linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p><strong>在每个节点上</strong>安装keadm</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf keadm-v1.12.2-linux-长度amd64.tar.gz</span><br><span class="line">sudo <span class="built_in">mv</span> keadm-v1.12.2-linux-amd64/keadm/keadm /usr/bin/</span><br></pre></td></tr></table></figure>
+
+<h3 id="云端安装"><a href="#云端安装" class="headerlink" title="云端安装"></a>云端安装</h3><p>使用keadm安装kubeedge的云端组件cloudcore</p>
+<p>如果速度慢可以提前拉取cloudcore镜像</p>
+<p>sudo docker pull kubeedge&#x2F;cloudcore:v1.13.1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo keadm init --advertise-address=192.168.43.118 --profile version=v1.13.1</span><br><span class="line"><span class="comment"># 这些参数已经没有用了 --set cloudcore-tag=v1.13.0 --kubeedge-version=1.13.0</span></span><br><span class="line">Kubernetes version verification passed, KubeEdge installation will start...</span><br><span class="line">CLOUDCORE started</span><br><span class="line">=========CHART DETAILS=======</span><br><span class="line">NAME: cloudcore</span><br><span class="line">LAST DEPLOYED: Thu Nov  3 11:05:24 2022</span><br><span class="line">NAMESPACE: kubeedge</span><br><span class="line">STATUS: deployed</span><br><span class="line">REVISION: 1</span><br></pre></td></tr></table></figure>
+
+<p>–advertise-address&#x3D;xxx.xx.xx.xx 这里的xxx.xx.xx.xx换成云主机的公网地址，–profile version&#x3D;v1.12.1 意思是指定安装的kubeEdge的版本，如果默认不指定那么keadm会自动去下载最新的版本</p>
+<p>注意，这个命令会从仓库下载cloudcore容器镜像</p>
+<p>我们可以看到cloudcore的Pod和service已经在运行了，cloudcore会监听本地的10000-10004端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod,svc -n kubeedge</span><br><span class="line">NAME                             READY   STATUS    RESTARTS   AGE</span><br><span class="line">pod/cloudcore-5768d46f8d-fqdcn   1/1     Running   0          78s</span><br><span class="line"></span><br><span class="line">NAME                TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)                                             AGE</span><br><span class="line">service/cloudcore   ClusterIP   10.99.61.17   &lt;none&gt;        10000/TCP,10001/TCP,10002/TCP,10003/TCP,10004/TCP   78s</span><br></pre></td></tr></table></figure>
+
+<p>获得边缘设备接入的token</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo keadm gettoken</span><br><span class="line">0825d1d733ec84877374418cc4ecd379501efe7fe1c778e91022367c834a22a6.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTM0NDg5NzV9.ws0B17aZrvhSL0mu1FEVElnewTFGrh5MNn_4reBgbNA</span><br></pre></td></tr></table></figure>
+
+<h3 id="边缘节点安装"><a href="#边缘节点安装" class="headerlink" title="边缘节点安装"></a>边缘节点安装</h3><p>可以提前拉取镜像（提前拉取没有用）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull kubeedge/installation-package:v1.13.0</span><br></pre></td></tr></table></figure>
+
+<p>加入集群，keadm会安装edgecore和mqtt协议的实现软件mosquitto，mosquitto会监听localhost:1183端口</p>
+<p>1.12</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo keadm <span class="built_in">join</span> --cloudcore-ipport=192.168.43.117:10000 --kubeedge-version=1.12.2 --token=f17ab9d16aa9b82249d2242101759e257e44970f58b347e61155ea0c34f836a4.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzY4MTc5ODF9.60yCItWyPoNJrIjEBZxNzcQlqTQuiLYkF3Ky9zQ16Ps</span><br></pre></td></tr></table></figure>
+
+<p>由于1.13版本默认容器运行时为containerd，可手动指定runtimetype为docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo keadm <span class="built_in">join</span> --cloudcore-ipport=192.168.43.118:10000 --kubeedge-version=1.13.1 --runtimetype=docker --token=0825d1d733ec84877374418cc4ecd379501efe7fe1c778e91022367c834a22a6.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTM0NDg5NzV9.ws0B17aZrvhSL0mu1FEVElnewTFGrh5MNn_4reBgbNA</span><br></pre></td></tr></table></figure>
+
+<p><code>--cloudcore-ipport</code>是边缘节点能访问的云master主机的IP端口号，<code>--token</code>是上面云matster生成的识别码</p>
+<p>安装成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line">W1024 13:10:08.370505    4423 validation.go:71] NodeIP is empty , use default ip <span class="built_in">which</span> can connect to cloud.</span><br><span class="line">I1024 13:10:08.371425    4423 join.go:100] 9. Run EdgeCore daemon</span><br><span class="line">I1024 13:10:08.822777    4423 join.go:317] </span><br><span class="line">I1024 13:10:08.822789    4423 join.go:318] KubeEdge edgecore is running, For logs visit: journalctl -u edgecore.service -xe</span><br></pre></td></tr></table></figure>
+
+<p>如果通过 <code>sudo systemctl status edgecore</code>发现服务失败，使用 <code>journalctl -u edgecore.service -xe</code>查看日志</p>
+<p>在master上查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@master:~<span class="comment"># kubectl get node</span></span><br><span class="line">NAME        STATUS   ROLES                  AGE    VERSION</span><br><span class="line">edgenode1   Ready    agent,edge             10m    v1.22.6-kubeedge-v1.12.0</span><br><span class="line">edgenode2   Ready    agent,edge             5m8s   v1.22.6-kubeedge-v1.12.0</span><br><span class="line">edgenode3   Ready    agent,edge             2s     v1.22.6-kubeedge-v1.12.0</span><br><span class="line">master      Ready    control-plane,master   47m    v1.22.15 </span><br></pre></td></tr></table></figure>
+
+<h2 id="配置kubectl-logs支持边缘节点"><a href="#配置kubectl-logs支持边缘节点" class="headerlink" title="配置kubectl logs支持边缘节点"></a>配置kubectl logs支持边缘节点</h2><p>边缘部署一个Nginx</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">kubectl create deployment nginx --image=nginx -oyaml --dry-run=client &gt; nginx.yaml</span><br><span class="line">vi nginx.yaml</span><br><span class="line"><span class="comment"># 在spec-spec中加入边缘亲和性</span></span><br><span class="line">	  affinity:</span><br><span class="line">        nodeAffinity:</span><br><span class="line">          requiredDuringSchedulingIgnoredDuringExecution:</span><br><span class="line">            nodeSelectorTerms:</span><br><span class="line">            - matchExpressions:</span><br><span class="line">              - key: node-role.kubernetes.io/edge</span><br><span class="line">                operator: In</span><br><span class="line">                values: [<span class="string">&quot;&quot;</span>]</span><br><span class="line">kubectl apply -f nginx.yaml</span><br><span class="line">(需要首先修改端口号，在~/.kube/config文件中，将端口号修改一下)</span><br><span class="line">kubectl expose deployment nginx --port=80 --<span class="built_in">type</span>=NodePort</span><br><span class="line">kubectl get pod,svc</span><br></pre></td></tr></table></figure>
+
+<p>可以看到nginx暴露的端口号为30865，因此我们在任意边缘节点访问地址：<code>curl http://node2:30865</code>可以成功访问nginx首页</p>
+<p>这样默认搭建好的kubeedge不支持在master查看边缘节点logs，会有如下的报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs nginx-597c67fd4d-kx44m</span><br><span class="line">Error from server: Get <span class="string">&quot;https://192.168.40.10:10350/containerLogs/default/nginx-597c67fd4d-kx44m/nginx&quot;</span>: dial tcp 192.168.40.10:10350: i/o <span class="built_in">timeout</span></span><br></pre></td></tr></table></figure>
+
+<p>参考官方文档教程<a target="_blank" rel="noopener" href="https://kubeedge.io/zh/docs/setup/keadm_zh/">使用Keadm进行部署 | KubeEdge一个支持边缘计算的开放平台</a></p>
+<p>kube-proxy默认和kubeedge不兼容，因此我们考虑在边缘端移除kube-proxy</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl edit daemonsets.apps -n kube-system kube-proxy</span><br></pre></td></tr></table></figure>
+
+<p>我们修改kube-proxy的节点亲和性，使其不存在于边缘节点</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Please edit the object below. Lines beginning with a &#x27;#&#x27; will be ignored,</span></span><br><span class="line"><span class="comment"># and an empty file will abort the edit. If an error occurs while saving this file will be</span></span><br><span class="line"><span class="comment"># reopened with the relevant failures.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">DaemonSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">deprecated.daemonset.template.generation:</span> <span class="string">&quot;1&quot;</span></span><br><span class="line">  <span class="attr">creationTimestamp:</span> <span class="string">&quot;2022-06-20T12:43:20Z&quot;</span></span><br><span class="line">  <span class="attr">generation:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">k8s-app:</span> <span class="string">kube-proxy</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kube-proxy</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line">  <span class="attr">resourceVersion:</span> <span class="string">&quot;92283&quot;</span></span><br><span class="line">  <span class="attr">uid:</span> <span class="string">39dd85f5-8d7f-47ff-83b4-59df66de7803</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">revisionHistoryLimit:</span> <span class="number">10</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">k8s-app:</span> <span class="string">kube-proxy</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">creationTimestamp:</span> <span class="literal">null</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">k8s-app:</span> <span class="string">kube-proxy</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">affinity:</span> <span class="comment"># 在这里加入亲和性</span></span><br><span class="line">        <span class="attr">nodeAffinity:</span></span><br><span class="line">          <span class="attr">requiredDuringSchedulingIgnoredDuringExecution:</span></span><br><span class="line">            <span class="attr">nodeSelectorTerms:</span></span><br><span class="line">              <span class="bullet">-</span> <span class="attr">matchExpressions:</span></span><br><span class="line">                <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">node-role.kubernetes.io/edge</span></span><br><span class="line">                  <span class="attr">operator:</span> <span class="string">DoesNotExist</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">command:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">/usr/local/bin/kube-proxy</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--config=/var/lib/kube-proxy/config.conf</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--hostname-override=$(NODE_NAME)</span></span><br><span class="line">        <span class="attr">env:</span></span><br><span class="line">        <span class="string">......</span></span><br></pre></td></tr></table></figure>
+
+<p>此时我们在云master上看系统的pod组件，发现边缘的kube-proxy已经消失了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod -n kube-system -owide</span><br></pre></td></tr></table></figure>
+
+<p>因为flannel不支持边缘环境，无法在边缘运行，等下使用edgemesh见<a target="_blank" rel="noopener" href="https://github.com/kubeedge/kubeedge/issues/2287">issue2287</a>，同样修改flannel的亲和性，使其不在边缘运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 重新部署flannel</span></span><br><span class="line">kubectl delete daemonset.apps/kube-flannel-ds -nkube-flannel</span><br><span class="line">wget https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</span><br><span class="line">vi kube-flannel.yml</span><br><span class="line"><span class="comment"># kubectl edit -n kube-flannel daemonset.apps/kube-flannel-ds</span></span><br><span class="line">......<span class="comment"># 修改下面的affi亲和性</span></span><br><span class="line">- key: node-role.kubernetes.io/edge</span><br><span class="line">                  operator: DoesNotExist</span><br><span class="line">......</span><br><span class="line"><span class="comment"># 重新部署</span></span><br><span class="line">kubectl apply -f kube-flannel.yml</span><br><span class="line"><span class="comment"># 再看，只有云主机上有运行了</span></span><br><span class="line">kubectl get all -nkube-flannel -owide </span><br></pre></td></tr></table></figure>
+
+<p>查看Kubernetes 的 <code>ca.crt</code> 和 <code>ca.key</code> 文件都存在</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /etc/kubernetes/pki</span><br><span class="line">apiserver.crt              apiserver.key                 ca.crt  front-proxy-ca.crt      front-proxy-client.key</span><br><span class="line">apiserver-etcd-client.crt  apiserver-kubelet-client.crt  ca.key  front-proxy-ca.key      sa.key</span><br><span class="line">apiserver-etcd-client.key  apiserver-kubelet-client.key  etcd    front-proxy-client.crt  sa.pub</span><br></pre></td></tr></table></figure>
+
+<p>在云端节点为CloudStream生成证书，其中 <code>certgen.sh</code>在kubeedge源码中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">wget https://github.com/kubeedge/kubeedge/archive/refs/tags/v1.13.1.tar.gz</span><br><span class="line">tar -xf v1.13.1.tar.gz</span><br><span class="line"><span class="built_in">mkdir</span> /etc/kubeedge</span><br><span class="line"><span class="built_in">cp</span> kubeedge-1.13.1/build/tools/certgen.sh /etc/kubeedge/</span><br><span class="line"><span class="built_in">cd</span> /etc/kubeedge/</span><br><span class="line">sudo su</span><br><span class="line"><span class="built_in">export</span> CLOUDCOREIPS=<span class="string">&quot;192.168.43.118&quot;</span></span><br><span class="line">bash /etc/kubeedge/certgen.sh stream</span><br></pre></td></tr></table></figure>
+
+<p>在master设置iptables规则，把所有发往边缘edgecore10350的包全部转发给cloudcore，让edgecore通过stream来转发</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 端口10003和10350是 CloudStream 和 Edgecore 的默认端口</span></span><br><span class="line">sudo iptables -t nat -A OUTPUT -p tcp --dport 10350 -j DNAT --to 10.0.1.200:10003</span><br></pre></td></tr></table></figure>
+
+<p>修改边缘端edgecore配置文件 <code>/etc/kubeedge/config/edgecore.yaml</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/kubeedge/config/edgecore.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">edgeStream:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># 修改为true</span></span><br><span class="line">    <span class="attr">handshakeTimeout:</span> <span class="number">30</span></span><br><span class="line">    <span class="attr">readDeadline:</span> <span class="number">15</span></span><br><span class="line">    <span class="attr">server:</span> <span class="number">101.201</span><span class="number">.181</span><span class="number">.239</span><span class="string">:10004</span> <span class="comment"># 这个为cloudcore的ip地址</span></span><br><span class="line">    <span class="attr">tlsTunnelCAFile:</span> <span class="string">/etc/kubeedge/ca/rootCA.crt</span></span><br><span class="line">    <span class="attr">tlsTunnelCertFile:</span> <span class="string">/etc/kubeedge/certs/server.crt</span></span><br><span class="line">    <span class="attr">tlsTunnelPrivateKeyFile:</span> <span class="string">/etc/kubeedge/certs/server.key</span></span><br><span class="line">    <span class="attr">writeDeadline:</span> <span class="number">15</span></span><br></pre></td></tr></table></figure>
+
+<p>重启edgecore</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart edgecore</span><br></pre></td></tr></table></figure>
+
+<p>然后边缘的edgecore就可以正常启动了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start edgecore</span><br><span class="line">sudo systemctl status edgecore</span><br><span class="line">● edgecore.service</span><br><span class="line">     Loaded: loaded (/etc/systemd/system/edgecore.service; enabled; vendor preset: enabled)</span><br><span class="line">     Active: active (running) since Thu 2022-07-07 16:53:51 CST; 4s ago</span><br><span class="line">   Main PID: 58760 (edgecore)</span><br><span class="line">      Tasks: 10 (<span class="built_in">limit</span>: 992)</span><br><span class="line">     Memory: 36.5M</span><br><span class="line">        CPU: 315ms</span><br><span class="line">     CGroup: /system.slice/edgecore.service</span><br><span class="line">             └─58760 /usr/local/bin/edgecore</span><br></pre></td></tr></table></figure>
+
+<p>现在就可以正常在云端看边缘的logs了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs nginx-597c67fd4d-hwmdz</span><br><span class="line">/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration</span><br><span class="line">/docker-entrypoint.sh: Looking <span class="keyword">for</span> shell scripts <span class="keyword">in</span> /docker-entrypoint.d/</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装EdgeMesh"><a href="#安装EdgeMesh" class="headerlink" title="安装EdgeMesh"></a>安装EdgeMesh</h2><p>在边缘不使用kube-proxy以后，边缘需要一个网络代理插件，这里我们使用kubeedge官方的edgemesh</p>
+<p>EdgeMesh 相当于kube-proxy+flannel+coreDNS</p>
+<p>edgemesh现在从kubeedge独立出来了，有自己专门的文档网站<a target="_blank" rel="noopener" href="https://edgemesh.netlify.app/zh/">介绍 | EdgeMesh</a>，根据文档edgemesh是一个不依赖kubeedge的独立的k8s网络代理，只需要在master节点上使用helm安装就可以了</p>
+<p>去除 K8s master 节点的污点，如果 K8s master 节点上没有部署需要被代理的应用，此步骤也可以不执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl taint nodes --all node-role.kubernetes.io/master-</span><br></pre></td></tr></table></figure>
+
+<p>正常情况下你不会希望 EdgeMesh 去代理 Kubernetes API 服务，因此需要给它添加过滤标签，更多信息请参考 <a target="_blank" rel="noopener" href="https://edgemesh.netlify.app/advanced/hybird-proxy.html#%E6%9C%8D%E5%8A%A1%E8%BF%87%E6%BB%A4">服务过滤</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label services kubernetes service.edgemesh.kubeedge.io/service-proxy-name=<span class="string">&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>启用 KubeEdge 的边缘 Kube-API 端点服务</p>
+<p>在云端，开启 dynamicController 模块，配置完成后，需要重启 cloudcore</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kubectl edit cm cloudcore -n kubeedge</span><br><span class="line">modules:</span><br><span class="line">  ...</span><br><span class="line">  dynamicController:</span><br><span class="line">    <span class="built_in">enable</span>: <span class="literal">true</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 杀死cloudcore容器</span></span><br><span class="line">kubectl get all -nkubeedge</span><br><span class="line">kubectl delete -nkubeedge pod/cloudcore-6687684d4d-92cvz</span><br></pre></td></tr></table></figure>
+
+<p>在边缘节点，打开 metaServer 模块，配置完成后，需要重启 edgecore</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/kubeedge/config/edgecore.yaml</span><br><span class="line">modules:</span><br><span class="line">  ...</span><br><span class="line">  metaManager:</span><br><span class="line">    metaServer:</span><br><span class="line">      <span class="built_in">enable</span>: <span class="literal">true</span></span><br><span class="line">...</span><br><span class="line"><span class="comment"># 重启 edgecore</span></span><br><span class="line">sudo systemctl restart edgecore</span><br></pre></td></tr></table></figure>
+
+<p>在边缘节点，配置 clusterDNS 和 clusterDomain，配置完成后，需要重启 edgecore（这是为了边缘应用能够访问到 EdgeMesh 的 DNS 服务，与边缘 Kube-API 端点本身无关，但为了配置的流畅性，还是放在这里说明。</p>
+<p>clusterDNS 设置的值 ‘169.254.96.16’ 来自于 <a target="_blank" rel="noopener" href="https://edgemesh.netlify.app/zh/reference/config-items.html#edgemesh-agent-cfg">commonConfig</a> 中 bridgeDeviceIP 的默认值，正常情况下无需修改，非得修改请保持两者一致。）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /etc/kubeedge/config/edgecore.yaml</span><br><span class="line">modules:</span><br><span class="line">  ...</span><br><span class="line">  edged:</span><br><span class="line">    ...</span><br><span class="line">    tailoredKubeletConfig:</span><br><span class="line">      ...</span><br><span class="line">      clusterDNS:</span><br><span class="line">      - 169.254.96.16</span><br><span class="line">      clusterDomain: cluster.local</span><br><span class="line">...</span><br><span class="line"><span class="comment"># 重启 edgecore</span></span><br><span class="line">sudo systemctl restart edgecore</span><br></pre></td></tr></table></figure>
+
+<p>最后，在边缘节点，测试边缘 Kube-API 端点功能是否正常</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl 127.0.0.1:10550/api/v1/services</span><br><span class="line"><span class="comment"># 出现apiversion开头的json字符串说明正常</span></span><br><span class="line">&#123;<span class="string">&quot;apiVersion&quot;</span>:<span class="string">&quot;v1&quot;</span>,<span class="string">&quot;items&quot;</span>:[&#123;<span class="string">&quot;api......</span></span><br></pre></td></tr></table></figure>
+
+<p>主机安装helm3</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://get.helm.sh/helm-v3.11.0-linux-amd64.tar.gz</span><br><span class="line">tar -xf helm-v3.11.0-linux-amd64.tar.gz</span><br><span class="line">sudo <span class="built_in">mv</span> linux-amd64/helm /usr/local/bin/</span><br></pre></td></tr></table></figure>
+
+<p>设置helm repo仓库，这里使用微软仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">helm repo add stable http://mirror.azure.cn/kubernetes/charts</span><br><span class="line">helm repo update</span><br></pre></td></tr></table></figure>
+
+<p>生成PSK密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openssl rand -<span class="built_in">base64</span> 32</span><br><span class="line">JDhvPrqj/mA/2zA4P9voxqQIR8ectRzY8pDKaD+vlHo=</span><br></pre></td></tr></table></figure>
+
+<p>helm安装edgemesh，只有一个master节点作为中继节点，暴露地址写云主机公网IP</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">helm install edgemesh --namespace kubeedge \</span><br><span class="line">--<span class="built_in">set</span> agent.psk=JDhvPrqj/mA/2zA4P9voxqQIR8ectRzY8pDKaD+vlHo= \</span><br><span class="line">--<span class="built_in">set</span> agent.relayNodes[0].nodeName=master,agent.relayNodes[0].advertiseAddress=<span class="string">&quot;&#123;192.168.80.128&#125;&quot;</span> \</span><br><span class="line">https://raw.githubusercontent.com/kubeedge/edgemesh/main/build/helm/edgemesh.tgz</span><br></pre></td></tr></table></figure>
+
+<p>多个中继节点，如果一个边缘局域网内要做到服务可访问，应该在局域网内设置一个rely节点(似乎不用)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">helm install edgemesh --namespace kubeedge \</span><br><span class="line">--<span class="built_in">set</span> agent.psk=udj41ZTdaQNb0gUaS64QuLgkFNTYy9dlXKg6bvQYuls= \</span><br><span class="line">--<span class="built_in">set</span> agent.relayNodes[0].nodeName=master,agent.relayNodes[0].advertiseAddress=<span class="string">&quot;&#123;101.201.181.239&#125;&quot;</span> \</span><br><span class="line">--<span class="built_in">set</span> agent.relayNodes[1].nodeName=edgenode2,agent.relayNodes[1].advertiseAddress=<span class="string">&quot;&#123;192.168.56.11&#125;&quot;</span> \</span><br><span class="line">--<span class="built_in">set</span> agent.relayNodes[2].nodeName=edgenode3,agent.relayNodes[2].advertiseAddress=<span class="string">&quot;&#123;192.168.56.12&#125;&quot;</span> \</span><br><span class="line">https://raw.githubusercontent.com/kubeedge/edgemesh/main/build/helm/edgemesh.tgz</span><br></pre></td></tr></table></figure>
+
+<p>卸载edgemesh方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm uninstall edgemesh -n kubeedge</span><br></pre></td></tr></table></figure>
+
+<p>检验部署结果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">helm <span class="built_in">ls</span> -A</span><br><span class="line">NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART              APP VERSION  </span><br><span class="line">edgemesh        kubeedge        1               2022-10-08 22:36:18.261721438 +0800 CST deployed        edgemesh-0.1.0     latest</span><br></pre></td></tr></table></figure>
+
+<p>再次检验</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">kubectl get all -n kubeedge -o wide</span><br><span class="line">NAME                             READY   STATUS              RESTARTS      AGE    IP              NODE          NOMINATED NODE   READINESS GATES</span><br><span class="line">pod/cloudcore-5768d46f8d-t8dnn   1/1     Running             1 (50m ago)   159m   172.28.40.134   master        &lt;none&gt;           &lt;none&gt;</span><br><span class="line">pod/edgemesh-agent-4f5xt         0/1     ContainerCreating   0             4m8s   192.168.40.10   area1-node1   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">pod/edgemesh-agent-6czts         0/1     CrashLoopBackOff    5 (27s ago)   4m8s   172.28.40.134   master        &lt;none&gt;           &lt;none&gt;</span><br><span class="line">pod/edgemesh-agent-krvsc         0/1     Pending             0             4m8s   &lt;none&gt;          area2-node1   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">pod/edgemesh-agent-p22b5         0/1     Pending             0             4m8s   &lt;none&gt;          area2-node2   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">pod/edgemesh-agent-tzq7g         0/1     Pending             0             4m8s   &lt;none&gt;          area1-node2   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<p>云主机上的edgemesh启动崩溃，边缘上的edgemesh一直在下载镜像，创建容器和pending，可以看看是不是edgemesh镜像不是最新的造成的</p>
+<p>等了一晚上，终于edgemesh镜像拉取完毕，在边缘运行起来了。</p>
+<p>因为helm部署的edgemesh在重启后不会恢复，因此我们手动部署edgemesh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/kubeedge/edgemesh.git</span><br><span class="line"><span class="built_in">cd</span> edgemesh</span><br><span class="line">kubectl apply -f build/crds/istio/</span><br><span class="line"><span class="comment"># 设置 build/agent/resources/04-configmap.yaml 的 relayNodes，并重新生成 PSK 密码</span></span><br><span class="line">kubectl apply -f build/agent/resources/</span><br><span class="line"><span class="comment"># 检验部署结果</span></span><br><span class="line">kubectl get all -n kubeedge -o wide</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h2><p>查看监听端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo lsof -i -P -n | grep LISTEN</span><br><span class="line">sudo netstat -tulpn | grep LISTEN</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 云边流量</span></span><br><span class="line">ip.addr == 192.168.80.128</span><br><span class="line"><span class="comment"># 边边流量</span></span><br><span class="line">arp or mdns or ssdp or (ip.src == 192.168.0.0/24 and ip.dst == 192.168.0.0/24)</span><br></pre></td></tr></table></figure>
+
+<h3 id="健康检查"><a href="#健康检查" class="headerlink" title="健康检查"></a>健康检查</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">        res=$(curl http://10.96.0.28:8091/scheduler |grep 0.000)</span><br><span class="line">        <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$res</span>&quot;</span> ];<span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;得到正确的功率值&quot;</span></span><br><span class="line">                <span class="built_in">echo</span> -e <span class="string">&quot;\a&quot;</span></span><br><span class="line">                <span class="built_in">break</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">        <span class="built_in">sleep</span> 1</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">curl http://10.96.0.28:8091/scheduler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行时用time运行脚本</span></span><br><span class="line">time ./test.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="统计离线感知的准确度"><a href="#统计离线感知的准确度" class="headerlink" title="统计离线感知的准确度"></a>统计离线感知的准确度</h3><p>部署nginx应用，使每个应用均匀分布在每个节点上</p>
+<p>断开一个运行有应用的节点的云边连接，查看控制平面上该节点上的Pod是否会迁移</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 禁止某个节点ip上外网</span></span><br><span class="line">sudo iptables -A FORWARD -i enp0s8 -s 192.168.56.10 -o enp0s3 -j DROP</span><br><span class="line"><span class="comment"># 恢复某个节点上外网</span></span><br><span class="line">sudo iptables -A FORWARD -i enp0s8 -s 192.168.56.10 -o enp0s3 -j ACCEPT</span><br><span class="line"><span class="comment"># 列出规则</span></span><br><span class="line">sudo iptables -L -n --line-number</span><br><span class="line"><span class="comment"># 删除规则</span></span><br><span class="line">sudo iptables -D FORWARD 1</span><br></pre></td></tr></table></figure>
+
+<p>关闭一个运行有应用的节点电源，查看控制平面上该节点上的Pod是否会迁移</p>
+<h3 id="重连同步性能"><a href="#重连同步性能" class="headerlink" title="重连同步性能"></a>重连同步性能</h3><p>边缘断网以后，等待节点not ready被打上污点，然后使用nethogs记录apiserver的流量情况，然后边缘通网，等节点ready后10秒结束流量记录，每秒流量总和即为重连同步的数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用nethogs工具查看apiserver进程网速</span></span><br><span class="line">sudo apt install nethogs</span><br><span class="line">nethogs -b|grep kube-apiserver &gt;mon.txt</span><br></pre></td></tr></table></figure>
+
+<p>Ubuntu20.04 TLS 开机卡在“A start job is running for wait for network to be Configured”解决</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在[Service]下添加 TimeoutStartSec=2sec，（设置超时时间为2秒）如下：</span></span><br><span class="line">sudo vi /etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service</span><br><span class="line">[Service]</span><br><span class="line">Type=oneshot</span><br><span class="line">ExecStart=/lib/systemd/systemd-networkd-wait-online</span><br><span class="line">RemainAfterExit=<span class="built_in">yes</span></span><br><span class="line">TimeoutStartSec=2sec</span><br></pre></td></tr></table></figure>
+
+<p>修改pod上限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/kubeedge/config/edgecore.yaml <span class="comment"># kubeedge</span></span><br><span class="line">...</span><br><span class="line"><span class="comment"># 修改下行</span></span><br><span class="line">maxPods: 500</span><br><span class="line">sudo vi /var/lib/kubelet/config.yaml <span class="comment"># 其他</span></span><br><span class="line">...</span><br><span class="line"><span class="comment"># 加入下行</span></span><br><span class="line">maxPods: 500</span><br><span class="line">sudo systemctl restart kubelet </span><br><span class="line">sudo systemctl restart edgecore </span><br><span class="line"><span class="comment"># master查询状态：</span></span><br><span class="line">kubectl describe node node1  |  grep -i <span class="string">&quot;Capacity\|Allocatable&quot;</span> -A 6</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Prometheuses"><a href="#安装Prometheuses" class="headerlink" title="安装Prometheuses"></a>安装Prometheuses</h2>
+    </div>
+
+    
+    
+    
+
+     
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag"><i class="fa fa-tag"></i>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/10/18/Client-Go%E7%AC%94%E8%AE%B0/" rel="prev" title="Client-Go笔记">
+      <i class="fa fa-chevron-left"></i> Client-Go笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81ODI4OC8zNDc1MQ=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#KubeEdge%E6%90%AD%E5%BB%BA"><span class="nav-number">1.</span> <span class="nav-text">KubeEdge搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.</span> <span class="nav-text">初始化系统配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Docker"><span class="nav-number">1.3.</span> <span class="nav-text">安装Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%9C%BA%E5%AE%89%E8%A3%85Kubernetes"><span class="nav-number">1.4.</span> <span class="nav-text">主机安装Kubernetes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85KubeEdge"><span class="nav-number">1.5.</span> <span class="nav-text">安装KubeEdge</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%91%E7%AB%AF%E5%AE%89%E8%A3%85"><span class="nav-number">1.5.1.</span> <span class="nav-text">云端安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%B9%E7%BC%98%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85"><span class="nav-number">1.5.2.</span> <span class="nav-text">边缘节点安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEkubectl-logs%E6%94%AF%E6%8C%81%E8%BE%B9%E7%BC%98%E8%8A%82%E7%82%B9"><span class="nav-number">1.6.</span> <span class="nav-text">配置kubectl logs支持边缘节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85EdgeMesh"><span class="nav-number">1.7.</span> <span class="nav-text">安装EdgeMesh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="nav-number">1.8.</span> <span class="nav-text">性能测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5"><span class="nav-number">1.8.1.</span> <span class="nav-text">健康检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E7%A6%BB%E7%BA%BF%E6%84%9F%E7%9F%A5%E7%9A%84%E5%87%86%E7%A1%AE%E5%BA%A6"><span class="nav-number">1.8.2.</span> <span class="nav-text">统计离线感知的准确度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E8%BF%9E%E5%90%8C%E6%AD%A5%E6%80%A7%E8%83%BD"><span class="nav-number">1.8.3.</span> <span class="nav-text">重连同步性能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Prometheuses"><span class="nav-number">1.9.</span> <span class="nav-text">安装Prometheuses</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="aliang"
+      src="/images/maimai.jpg">
+  <p class="site-author-name" itemprop="name">aliang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/MofishMuziyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;MofishMuziyu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://user.qzone.qq.com/3011109691" title="qq空间 → https:&#x2F;&#x2F;user.qzone.qq.com&#x2F;3011109691" rel="noopener" target="_blank"><i class="fa fa-qq fa-fw"></i>qq空间</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/qing-feng-32-2-86" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;qing-feng-32-2-86" rel="noopener" target="_blank"><i class="gratipay fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://library.nudt.edu.cn/" title="https:&#x2F;&#x2F;library.nudt.edu.cn" rel="noopener" target="_blank">图书馆</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aliang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.1/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
